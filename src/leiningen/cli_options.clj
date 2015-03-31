@@ -5,6 +5,8 @@
 (def cli-options
   [["-f" "--filepath FILEPATH" "Filepath to the entity definition"
     :parse-fn #(str %)]
+   ["-d" "--database DATABASE" "Database key from the joplin configuration"
+    :parse-fn #(str %)]
    ["-h" "--help"]])
 
 (defn usage [options-summary]

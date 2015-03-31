@@ -1,15 +1,21 @@
 (ns leiningen.closp-crud
   (:require [leiningen.cli-options :as opt-helper]
             [clojure.tools.cli :as t-cli]
-            [leiningen.entities :as ent]))
+            [leiningen.entities :as ent]
+            [clojure.string :as s]
+            [leiningen.helper :as h]))
 
 (defn closp-crud
   "I don't do a lot."
   [project & args]
   (let [{:keys [options arguments errors summary]} (t-cli/parse-opts args opt-helper/cli-options)
-        fp (:filepath options)]
+        fp (:filepath options)
+        database (keyword (s/trim (:database options)))
+        jdbc-uri (h/project-map->jdbc-uri project database)]
+    ;(println project)
+    ;(println (ent/))
     ;(println "main: " (ent/load-entity-from-path fp))
-    (println  (ent/generate-sql-statemens (ent/load-entity-from-path fp)))
+    ;(println  (ent/generate-sql-statemens (ent/load-entity-from-path fp)))
     ;(println "Hi!" (ent/load-entity-from-path fp))
     ))
 
