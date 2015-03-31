@@ -1,13 +1,20 @@
 (ns leiningen.closp-crud
-  (:require [clj-liquibase.change :as ch]))
+  (:require [leiningen.cli-options :as opt-helper]
+            [clojure.tools.cli :as t-cli]
+            [leiningen.entities :as ent]))
 
 (defn closp-crud
   "I don't do a lot."
   [project & args]
-  (println "Hi!"))
+  (let [{:keys [options arguments errors summary]} (t-cli/parse-opts args opt-helper/cli-options)
+        fp (:filepath options)]
+    ;(println "main: " (ent/load-entity-from-path fp))
+    (println  (ent/generate-sql-statemens (ent/load-entity-from-path fp)))
+    ;(println "Hi!" (ent/load-entity-from-path fp))
+    ))
 
 
-
+;(closp-crud "" "-f C:/Users/sveri/IdeaProjects/closp-crud/test-resources/table1-definition.edn")
 
 
 

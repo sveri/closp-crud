@@ -1,9 +1,9 @@
-(ns leiningen.new.cli-options
+(ns leiningen.cli-options
   (:require
     [clojure.string :as string]))
 
 (def cli-options
-  [["-fp" "--filepath FILEPATH" "Filepath to the entity definition"
+  [["-f" "--filepath FILEPATH" "Filepath to the entity definition"
     :parse-fn #(str %)]
    ["-h" "--help"]])
 

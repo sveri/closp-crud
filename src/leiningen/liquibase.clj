@@ -47,9 +47,9 @@
                  (.generateStatements change ds))]
     (into [] (flatten sql))))
 
-(defn create-table [ds]
-  (mu/! (ch/create-table (:name ds)
-                         (:columns ds))))
+(defn create-table [ent-description]
+  (mu/! (ch/create-table (:name ent-description)
+                         (:columns ent-description))))
 
 (defn drop-table-h2 [table1-definition]
   (str "DROP TABLE " (:name table1-definition)))
