@@ -1,7 +1,9 @@
 (ns leiningen.liquibase
   (:require [clj-jdbcutil.core :as spec]
             [clj-liquibase.core :as lb]
-            [clj-dbcp.core :as dbcp])
+            [clj-dbcp.core :as dbcp]
+            [clj-miscutil.core :as mu]
+            [clj-liquibase.change :as ch])
   (:import (liquibase.sql Sql)
            (liquibase.statement SqlStatement)
            (liquibase.sqlgenerator SqlGeneratorFactory)
@@ -44,3 +46,10 @@
                         (.generateSql sgf stmt ds)))
                  (.generateStatements change ds))]
     (into [] (flatten sql))))
+
+(defn create-table [ds]
+  (mu/! (ch/create-table (:name ds)
+                         (:columns ds))))
+
+(defn drop-table-h2 [table1-definition]
+  (str "DROP TABLE " (:name table1-definition)))

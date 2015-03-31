@@ -1,4 +1,4 @@
-(defproject closp-crud "0.1.0-SNAPSHOT"
+(defproject de.sveri/closp-crud "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -7,5 +7,11 @@
                  [com.h2database/h2 "1.4.185"]
                  [clj-liquibase "0.5.2"]
                  [clj-jdbcutil "0.1.0"]
-                 [clj-dbcp "0.8.1"]]
-  :eval-in-leiningen true)
+                 [clj-dbcp "0.8.1"]
+                 [org.clojure/tools.cli "0.3.1"]]
+  :dev-dependencies [[lein-autotest "1.2.0"]]
+  :source-paths ["src"]
+  :test-paths ["test"]
+  :profiles {:dev {:resource-paths ["test-resources"]}}
+  ;:eval-in-leiningen true
+  )

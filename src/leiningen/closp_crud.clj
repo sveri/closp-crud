@@ -1,7 +1,5 @@
 (ns leiningen.closp-crud
-  (:require [clj-liquibase.change :as ch]
-        [clj-miscutil.core :as mu]
-        [leiningen.liquibase :as liq]))
+  (:require [clj-liquibase.change :as ch]))
 
 (defn closp-crud
   "I don't do a lot."
@@ -10,18 +8,11 @@
 
 
 
-(def ct-change1 (mu/! (ch/create-table "sampletable1"
-                                       [[:id :int :null false :pk true :autoinc true]
-                                        [:name [:varchar 40] :null false]
-                                        [:gender [:char 1] :null false]])))
 
 
 
 
-
-
-
-
+; proposed syntax
 
 
 
