@@ -1,32 +1,22 @@
 # closp-crud
 
-FIXME: description
-
-## Installation
-
-Download from http://example.com/FIXME.
+A Leiningen plugin to do many wonderful things.
 
 ## Usage
 
-FIXME: explanation
+FIXME: Use this for user-level plugins:
 
-    $ java -jar closp-crud-0.1.0-standalone.jar [args]
+Put `[closp-crud "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your
+`:user` profile, or if you are on Leiningen 1.x do `lein plugin install
+closp-crud 0.1.0-SNAPSHOT`.
 
-## Options
+FIXME: Use this for project-level plugins:
 
-FIXME: listing of options this app accepts.
+Put `[closp-crud "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your project.clj.
 
-## Examples
+FIXME: and add an example usage that actually makes sense:
 
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+    $ lein closp-crud
 
 ## License
 
