@@ -9,9 +9,9 @@
   "I don't do a lot."
   [project & args]
   (let [{:keys [options arguments errors summary]} (t-cli/parse-opts args opt-helper/cli-options)
-        fp (:filepath options)
-        database (keyword (s/trim (:database options)))
-        jdbc-uri (h/project-map->jdbc-uri project database)]
+        file-in-path (:filepath options)
+        jdbc-uri (get-in m [:closp-crud :jdbc-url])
+        migr-out-path (get-in project [:closp-crud :migrations-output-path])]
     ;(println project)
     ;(println (ent/))
     ;(println "main: " (ent/load-entity-from-path fp))
