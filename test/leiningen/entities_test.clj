@@ -10,6 +10,6 @@
 (def h2-uri "jdbc:h2:mem:test_mem")
 
 
-(deftest generate-sql-statements
-  (let [ct-string (first (ent/generate-sql-statements table1-definition h2-uri))]
-    (is (.startsWith ct-string "CREATE TABLE PUBLIC.table1"))))
+;(deftest generate-sql-statements
+;  (let [ct-string (first (ent/generate-sql-statements table1-definition h2-uri))]
+;    (is (.startsWith ct-string "CREATE TABLE PUBLIC.table1"))))

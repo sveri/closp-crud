@@ -17,7 +17,7 @@
     (is (.contains cs-string "age"))))
 
 (deftest drop-table-h2
-  (is (= (str "DROP TABLE " (:name table1-definition)) (liq/drop-table-h2 table1-definition))))
+  (is (= (str "DROP TABLE " (:name table1-definition)) (liq/drop-table-sql table1-definition))))
 
 
 ;folder
