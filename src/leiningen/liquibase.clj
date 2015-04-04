@@ -3,20 +3,31 @@
             [clj-liquibase.core :as lb]
             [clj-dbcp.core :as dbcp]
             [clj-miscutil.core :as mu]
-            [clj-liquibase.change :as ch])
+            [clj-liquibase.change :as ch]
+            [clojure.core.typed :as t]
+            [de.sveri.ctanns.clj-liquibase-clj-misc-util])
   (:import (liquibase.sql Sql)
            (liquibase.statement SqlStatement)
            (liquibase.sqlgenerator SqlGeneratorFactory)
            (liquibase.change Change)
            (java.util List)
-           (liquibase.database Database)))
+           (liquibase.database Database)
+           (java.sql Connection)
+           (javax.sql DataSource)))
 
+(t/ann ^:no-check clj-liquibase.core/make-db-instance [Connection -> Database])
+(t/ann ^:no-check clj-dbcp.core/make-datasource [t/Any t/Any -> Connection])
+(t/ann ^:no-check clj-jdbcutil.core/make-dbspec [Connection -> (t/HMap :mandatory {:datasource DataSource})])
+(t/ann ^:no-check clj-liquibase.change/create-table [String t/Any -> t/Any])
+
+(t/ann get-db-connection [t/Any t/Any -> Database])
 (defn get-db-connection [adapter opts]
-  (-> (dbcp/make-datasource adapter opts)
-      (spec/make-dbspec)
-      :datasource
-      (.getConnection)
-      (lb/make-db-instance)))
+  (let [ds (dbcp/make-datasource adapter opts)
+        spec (spec/make-dbspec ds)
+        ^DataSource spec-ds (:datasource spec)
+        ^Connection conn (.getConnection spec-ds)]
+    (assert conn)
+    (lb/make-db-instance conn)))
 
 (defn ^List change-sql
   "Return a list of SQL statements (string) that would be required to execute
@@ -33,10 +44,10 @@
                         (.generateSql sgf stmt ds)))
                  (.generateStatements change ds))]
     (into [] (flatten sql))))
-
-(defn create-table [ent-description]
-  (mu/! (ch/create-table (:name ent-description)
-                         (:columns ent-description))))
-
-(defn drop-table-sql [table1-definition]
-  (str "DROP TABLE " (:name table1-definition)))
+;
+;(defn create-table [ent-description]
+;  (mu/! (ch/create-table (:name ent-description)
+;                         (:columns ent-description))))
+;
+;(defn drop-table-sql [table1-definition]
+;  (str "DROP TABLE " (:name table1-definition)))
