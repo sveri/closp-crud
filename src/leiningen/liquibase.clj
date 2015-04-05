@@ -13,7 +13,9 @@
            (java.util List)
            (liquibase.database Database)
            (java.sql Connection)
-           (javax.sql DataSource)))
+           (javax.sql DataSource)
+           (java.lang.reflect Array)
+           (liquibase.change.core CreateTableChange)))
 
 (t/ann ^:no-check clj-liquibase.core/make-db-instance [Connection -> Database])
 (t/ann ^:no-check clj-dbcp.core/make-datasource [t/Any t/Any -> Connection])
@@ -29,6 +31,7 @@
     (assert conn)
     (lb/make-db-instance conn)))
 
+(t/ann ^:no-check change-sql [Change Database -> (t/HVec [String])])
 (defn ^List change-sql
   "Return a list of SQL statements (string) that would be required to execute
   the given Change object instantly for current database without versioning."
@@ -44,10 +47,14 @@
                         (.generateSql sgf stmt ds)))
                  (.generateStatements change ds))]
     (into [] (flatten sql))))
-;
-;(defn create-table [ent-description]
-;  (mu/! (ch/create-table (:name ent-description)
-;                         (:columns ent-description))))
+
+(t/ann create-table [(t/HMap :mandatory {:name String :columns String}) -> CreateTableChange])
+(defn create-table [ent-description]
+  (ch/create-table (:name ent-description)
+                         (:columns ent-description))
+  ;(mu/! (ch/create-table (:name ent-description)
+  ;                       (:columns ent-description)))
+  )
 ;
 ;(defn drop-table-sql [table1-definition]
 ;  (str "DROP TABLE " (:name table1-definition)))
