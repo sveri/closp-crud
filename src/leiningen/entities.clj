@@ -2,9 +2,7 @@
   (:require [leiningen.liquibase :as liq]
             [de.sveri.clojure.commons.files.edn :as comm-edn]
             [leiningen.helper :as h]
-            [clojure.core.typed :as t]
-            )
-  (:import (java.io PrintWriter)))
+            [clojure.core.typed :as t]))
 
 (t/ann load-entity-from-path [String -> t/Any])
 (defn load-entity-from-path [fp]

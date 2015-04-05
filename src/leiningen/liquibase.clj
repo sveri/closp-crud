@@ -5,7 +5,8 @@
             [clj-miscutil.core :as mu]
             [clj-liquibase.change :as ch]
             [clojure.core.typed :as t]
-            [de.sveri.ctanns.clj-liquibase-clj-misc-util])
+            [de.sveri.ctanns.clj-liquibase-clj-misc-util]
+            [de.sveri.ctanns.clj-liquibase])
   (:import (liquibase.sql Sql)
            (liquibase.statement SqlStatement)
            (liquibase.sqlgenerator SqlGeneratorFactory)
@@ -14,16 +15,25 @@
            (liquibase.database Database)
            (java.sql Connection)
            (javax.sql DataSource)
-           (java.lang.reflect Array)
            (liquibase.change.core CreateTableChange)))
 
 (t/ann ^:no-check clj-liquibase.core/make-db-instance [Connection -> Database])
-(t/ann ^:no-check clj-dbcp.core/make-datasource [t/Any t/Any -> Connection])
-(t/ann ^:no-check clj-jdbcutil.core/make-dbspec [Connection -> (t/HMap :mandatory {:datasource DataSource})])
-(t/ann ^:no-check clj-liquibase.change/create-table [String t/Any -> t/Any])
-
-(t/ann get-db-connection [t/Any t/Any -> Database])
-(defn get-db-connection [adapter opts]
+(t/ann get-db-connection [(t/U t/Keyword (t/HMap)) (t/U nil (t/HMap)) -> Database])
+(defn get-db-connection
+  "Create datasource from a given option-map. Some examples are below:
+(make-datasource :derby {:target :memory :database :emp})            ;; embedded databases
+(make-datasource :mysql {:host :localhost :database :emp
+                         :username \"root\" :password \"s3cr3t\"})   ;; standard OSS databases
+(make-datasource :jdbc  {:jdbc-url   \"jdbc:mysql://localhost/emp\"
+                         :class-name \"com.mysql.Driver\"})          ;; JDBC arguments
+(make-datasource :odbc  {:dsn :sales_report})                        ;; ODBC connections
+(make-datasource :jndi  {:context \"whatever\"})                     ;; JNDI connections
+(make-datasource {:adapter :pgsql :host :localhost :database :emp
+                  :username :foo :password :bar})                    ;; :adapter in opts
+(make-datasource {:adapter :odbc-lite :dsn :moo})                    ;; ODBC-lite (MS-Access, MS-Excel etc.)
+(make-datasource {:class-name 'com.mysql.Driver
+                  :jdbc-url   \"jdbc:mysql://localhost/emp\"})       ;; JDBC is default adapter"
+  [adapter opts]
   (let [ds (dbcp/make-datasource adapter opts)
         spec (spec/make-dbspec ds)
         ^DataSource spec-ds (:datasource spec)
@@ -31,7 +41,7 @@
     (assert conn)
     (lb/make-db-instance conn)))
 
-(t/ann ^:no-check change-sql [Change Database -> (t/HVec [String])])
+(t/ann ^:no-check change-sql [Change Database -> (t/HSeq [String])])
 (defn ^List change-sql
   "Return a list of SQL statements (string) that would be required to execute
   the given Change object instantly for current database without versioning."
@@ -48,13 +58,11 @@
                  (.generateStatements change ds))]
     (into [] (flatten sql))))
 
-(t/ann create-table [(t/HMap :mandatory {:name String :columns String}) -> CreateTableChange])
+(t/ann ^:no-check create-table [(t/HMap :mandatory {:name String :columns (t/HSeq)}) -> CreateTableChange])
 (defn create-table [ent-description]
-  (ch/create-table (:name ent-description)
-                         (:columns ent-description))
-  ;(mu/! (ch/create-table (:name ent-description)
-  ;                       (:columns ent-description)))
-  )
-;
-;(defn drop-table-sql [table1-definition]
-;  (str "DROP TABLE " (:name table1-definition)))
+  (mu/! (ch/create-table (:name ent-description)
+                    (:columns ent-description))))
+
+(t/ann drop-table-sql [(t/HMap :mandatory {:name String}) -> String])
+(defn drop-table-sql [table1-definition]
+  (str "DROP TABLE " (:name table1-definition)))

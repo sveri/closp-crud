@@ -5,8 +5,7 @@
             [de.sveri.clojure.commons.files.faf :as comm-faf]
             [clojure.core.typed :as t]
             [de.sveri.ctanns.clojure-core]
-            [de.sveri.ctanns.clj-time])
-  (:import (clojure.core.typed.type_rep CountRange)))
+            [de.sveri.ctanns.clj-time]))
 
 (t/ann jdbc-uri->classname [String -> String])
 (defn jdbc-uri->classname
