@@ -4,6 +4,7 @@
 
 (defn render-db-file [ns dataset]
   (stenc/render-file "templates/db.mustache" {:entityname (:name dataset)
-                                              :ns         ns}))
+                                              :ns         ns
+                                              :cols [{:colname "foo"} {:colname "foo2"}]}))
 
 

@@ -6,3 +6,5 @@
 (defn get-all-{{entityname}}s [] (select {{entityname}}))
 
 (defn get-{{entityname}}-by-uuid [uuid] (first (select {{entityname}} (where {:uuid uuid}) (limit 1))))
+
+(defn create-{{entityname}} [{{#cols}} {{colname}} {{/cols}}])
