@@ -1,13 +1,9 @@
 (ns leiningen.code-generator
-  (:require [fipp.clojure :as f-clj]))
+  (:require [fipp.clojure :as f-clj]
+            [stencil.core :as stenc]))
 
-(defn generate-ns [ns]
-  (let [ns `(~'ns ~(symbol ns)
-              (:require [foo.bar :as ~'bar]))]
-    (clojure.pprint/pprint ns)))
+(defn render-db-file [ns dataset]
+  (stenc/render-file "templates/db.mustache" {:entityname (:name dataset)
+                                              :ns         ns}))
 
-(defmacro code-praiser
-  [code]
-  `(println
-     "Sweet gorilla of Manila, this is good code:"
-     (quote ~code)))
+

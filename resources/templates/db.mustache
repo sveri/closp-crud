@@ -1,2 +1,8 @@
 (ns {{ns}}
-  (:require [
+  (:require [korma.core :refer [defentity many-to-many]]))
+
+(defentity {{entityname}})
+
+(defn get-all-{{entityname}}s [] (select {{entityname}}))
+
+(defn get-{{entityname}}-by-uuid [uuid] (first (select {{entityname}} (where {:uuid uuid}) (limit 1))))

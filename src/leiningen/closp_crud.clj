@@ -11,5 +11,6 @@
   (let [{:keys [options arguments errors summary]} (t-cli/parse-opts args opt-helper/cli-options)
         file-in-path (:filepath options)
         jdbc-uri (get-in project [:closp-crud :jdbc-url])
-        migr-out-path (get-in project [:closp-crud :migrations-output-path])]
+        migr-out-path (get-in project [:closp-crud :migrations-output-path])
+        ns (get-in project [:closp-crud :ns])]
     (ent/generate-sql-statements (ent/load-entity-from-path file-in-path) jdbc-uri migr-out-path)))

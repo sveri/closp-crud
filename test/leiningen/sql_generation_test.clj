@@ -18,8 +18,3 @@
 
 (deftest drop-table-h2
   (is (= (str "DROP TABLE " (:name table1-definition)) (liq/drop-table-sql table1-definition))))
-
-
-;folder
-; -> table 1
-; -> table 2
