@@ -11,7 +11,6 @@
                  [org.clojure/tools.cli "0.3.1"]
                  [de.sveri/clojure-commons "0.2.0-Snapshot"]
                  [clj-time "0.9.0"]
-                 [fipp "0.5.2"]
                  [stencil "0.3.5"]]
   :dev-dependencies [[lein-autotest "1.2.0"]]
   :source-paths ["src"]

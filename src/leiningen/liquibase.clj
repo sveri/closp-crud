@@ -6,7 +6,8 @@
             [clj-liquibase.change :as ch]
             [clojure.core.typed :as t]
             [de.sveri.ctanns.clj-liquibase-clj-misc-util]
-            [de.sveri.ctanns.clj-liquibase])
+            [de.sveri.ctanns.clj-liquibase]
+            [leiningen.pre-types :as pt])
   (:import (liquibase.sql Sql)
            (liquibase.statement SqlStatement)
            (liquibase.sqlgenerator SqlGeneratorFactory)
@@ -58,7 +59,7 @@
                  (.generateStatements change ds))]
     (into [] (flatten sql))))
 
-(t/ann ^:no-check create-table [(t/HMap :mandatory {:name String :columns (t/HSeq)}) -> CreateTableChange])
+(t/ann ^:no-check create-table [pt/entity-description -> CreateTableChange])
 (defn create-table [ent-description]
   (mu/! (ch/create-table (:name ent-description)
                     (:columns ent-description))))

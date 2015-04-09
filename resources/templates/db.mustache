@@ -1,5 +1,6 @@
 (ns {{ns}}
-  (:require [korma.core :refer [defentity many-to-many]]))
+  (:require [korma.core :refer [defentity many-to-many]])
+  (:import (java.util UUID)))
 
 (defentity {{entityname}})
 
@@ -7,4 +8,5 @@
 
 (defn get-{{entityname}}-by-uuid [uuid] (first (select {{entityname}} (where {:uuid uuid}) (limit 1))))
 
-(defn create-{{entityname}} [{{#cols}} {{colname}} {{/cols}}])
+(defn create-{{entityname}} [{{#cols}}{{colname}} {{/cols}}]
+    (insert {{entityname}} (values { {{#cols}}:{{colname}}  {{colname}} {{/cols}}:uuid (str (UUID/randomUUID))})))
