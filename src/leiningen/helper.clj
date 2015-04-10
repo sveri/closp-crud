@@ -17,11 +17,11 @@
     :else (throw (IllegalArgumentException. "Either you did not provide a correct jdbc uri, or the protocol is
     not supported yet."))))
 
-(t/ann store-table-migrations [(t/HSeq [String]) String String -> nil])
-(defn store-table-migrations [sql-up sql-down out-path]
+(t/ann store-table-migrations [(t/HSeq [String]) String String String -> nil])
+(defn store-table-migrations [sql-up ent-name sql-down out-path]
   (comm-faf/create-if-not-exists (io/file out-path))
   (let [time-str (time-fmt/unparse (time-fmt/formatters :basic-date-time-no-ms) (time-core/now))
-        out-up-fp (io/file (str out-path "/" time-str "-up.sql"))
-        out-down-fp (io/file (str out-path "/" time-str "-down.sql"))]
+        out-up-fp (io/file (str out-path "/" ent-name "-" time-str "-up.sql"))
+        out-down-fp (io/file (str out-path "/" ent-name "-" time-str "-down.sql"))]
     (spit out-up-fp (first sql-up))
     (spit out-down-fp sql-down)))

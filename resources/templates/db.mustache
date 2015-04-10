@@ -1,5 +1,5 @@
 (ns {{ns}}
-  (:require [korma.core :refer [defentity many-to-many]])
+  (:require [korma.core :refer [defentity many-to-many select where limit insert values update delete set-fields]])
   (:import (java.util UUID)))
 
 (defentity {{entityname}})
@@ -9,4 +9,9 @@
 (defn get-{{entityname}}-by-uuid [uuid] (first (select {{entityname}} (where {:uuid uuid}) (limit 1))))
 
 (defn create-{{entityname}} [{{#cols}}{{colname}} {{/cols}}]
-    (insert {{entityname}} (values { {{#cols}}:{{colname}}  {{colname}} {{/cols}}:uuid (str (UUID/randomUUID))})))
+  (insert {{entityname}} (values { {{#cols}}:{{colname}}  {{colname}} {{/cols}}:uuid (str (UUID/randomUUID))})))
+
+(defn update-{{entityname}} [uuid fields]
+  (update {{entityname}} (set-fields fields) (where {:uuid uuid})))
+
+(defn delete-{{entityname}} [uuid] (delete {{entityname}} (where {:uuid uuid})))

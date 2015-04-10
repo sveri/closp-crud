@@ -14,4 +14,4 @@
   (let [classname (h/jdbc-uri->classname jdbc-uri)
         db-connection (liq/get-db-connection :jdbc {:jdbc-url jdbc-uri :classname classname})
         gen-sql (liq/change-sql (liq/create-table ent-description) db-connection)]
-    (h/store-table-migrations gen-sql (liq/drop-table-sql ent-description) migr-out-path)))
+    (h/store-table-migrations gen-sql (:name ent-description) (liq/drop-table-sql ent-description) migr-out-path)))
