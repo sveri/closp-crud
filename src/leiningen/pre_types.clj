@@ -1,8 +1,19 @@
 (ns leiningen.pre-types
-  (:require [clojure.core.typed :refer [defalias HMap HSeq]])
+  (:require [clojure.core.typed :as t :refer [defalias HMap HSeq]])
   (:import (clojure.lang Keyword)))
 
-                        ;(HMap :mandatory {:name String :columns (HSeq)})
 (defalias entity-description  (HMap :mandatory {:name String :columns (HSeq [(HSeq [Keyword Keyword *])
                                                                              (HSeq [Keyword Keyword *]) *])}))
-;(defn entity-description [] (HMap :mandatory {:name String :columns (HSeq)}))
+
+
+(def cols [[:id "foo"] [:fooname "foo"]])
+;-> [{:colname id} {:colname "fooname"}]
+
+(t/ann mapf [(t/HSequential [Keyword t/Any *]) -> (t/HMap :mandatory {:colname String})])
+(defn mapf [v]
+  {:colname (name (first v))})
+
+;(t/ann conv [(t/NonEmptyVec (t/HVec [t/Kw t/Any *]))
+;             -> (t/NonEmptyVec (t/HMap :mandatory {:colname String}))])
+;(defn conv [cols]
+;  (mapv mapf cols))
