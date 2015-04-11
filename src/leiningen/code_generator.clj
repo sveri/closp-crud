@@ -39,9 +39,10 @@
   "Will remove every column with the name :id"
   [ns ds]
   (let [cols (ds-columns->template-columns (:columns ds))]
-    {:entityname (:name ds)
-     :ns         (str ns "." (:name ds))
-     :cols       cols}))
+    {:entityname       (:name ds)
+     :entityname-upper (.toUpperCase (:name ds))
+     :ns               (str ns "." (:name ds))
+     :cols             cols}))
 
 ;(ann ^:no-check render-db-file [String pt/entity-description -> String])
 (defn render-db-file [ns dataset]
