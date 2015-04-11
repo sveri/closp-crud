@@ -6,6 +6,7 @@
             [leiningen.helper :as h]
             [leiningen.code-generator :as cg]))
 
+; TODO proper error handling
 (defn closp-crud
   "I don't do a lot."
   [project & args]

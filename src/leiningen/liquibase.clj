@@ -5,8 +5,6 @@
             [clj-miscutil.core :as mu]
             [clj-liquibase.change :as ch]
             [clojure.core.typed :as t]
-            [de.sveri.ctanns.clj-liquibase-clj-misc-util]
-            [de.sveri.ctanns.clj-liquibase]
             [leiningen.pre-types :as pt])
   (:import (liquibase.sql Sql)
            (liquibase.statement SqlStatement)

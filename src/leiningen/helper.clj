@@ -3,9 +3,7 @@
             [clj-time.core :as time-core]
             [clojure.java.io :as io]
             [de.sveri.clojure.commons.files.faf :as comm-faf]
-            [clojure.core.typed :as t]
-            [de.sveri.ctanns.clojure-core]
-            [de.sveri.ctanns.clj-time]))
+            [clojure.core.typed :as t]))
 
 (t/ann jdbc-uri->classname [String -> String])
 (defn jdbc-uri->classname
@@ -21,7 +19,7 @@
 (defn store-table-migrations [sql-up ent-name sql-down out-path]
   (comm-faf/create-if-not-exists (io/file out-path))
   (let [time-str (time-fmt/unparse (time-fmt/formatters :basic-date-time-no-ms) (time-core/now))
-        out-up-fp (io/file (str out-path "/" ent-name "-" time-str "-up.sql"))
-        out-down-fp (io/file (str out-path "/" ent-name "-" time-str "-down.sql"))]
+        out-up-fp (io/file (str out-path "/" ent-name "-" time-str ".up.sql"))
+        out-down-fp (io/file (str out-path "/" ent-name "-" time-str ".down.sql"))]
     (spit out-up-fp (first sql-up))
     (spit out-down-fp sql-down)))
