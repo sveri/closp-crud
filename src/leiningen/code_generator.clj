@@ -19,7 +19,11 @@
     (mapv (t/fn [col :- (t/HSequential [Keyword t/Any *])] {:colname (name (first col))}) filt-cols)))
 
 
-(ann dataset->template-map [String pt/entity-description -> t/Any])
+(ann dataset->template-map [String pt/entity-description ->
+                            (t/HMap :mandatory {:entityname String
+                                                :entityname-upper String
+                                                :ns String
+                                                :cols (t/Option (Seqable (t/HMap :mandatory {:colname String})))})])
 (defn dataset->template-map
   "Will remove every column with the name :id"
   [ns ds]
@@ -28,17 +32,18 @@
      :entityname-upper (.toUpperCase ^String (:name ds))
      :ns               (str ns "." (:name ds))
      :cols             cols}))
-;
-;(ann ^:no-check render-db-file [String pt/entity-description -> String])
-;(defn render-db-file [ns dataset]
-;  (let [templ-map (dataset->template-map ns dataset)]
-;    (stenc/render-file "templates/db.mustache" templ-map)))
 
-;(defn store-db-file [ns string filename proj-fp]
-;  (let [ns-path (str proj-fp "/" (s/replace ns #"\." "/"))
-;        ns-file-path (str ns-path "/" filename)]
-;    (faf/create-if-not-exists ns-path)
-;    (spit ns-file-path string)))
+(ann ^:no-check render-db-file [String pt/entity-description -> String])
+(defn render-db-file [ns dataset]
+  (let [templ-map (dataset->template-map ns dataset)]
+    (stenc/render-file "templates/db.mustache" templ-map)))
+
+
+(defn store-db-file [ns string filename proj-fp]
+  (let [ns-path (str proj-fp "/" (s/replace ns #"\." "/"))
+        ns-file-path (str ns-path "/" filename)]
+    (faf/create-if-not-exists ns-path)
+    (spit ns-file-path string)))
 ;
 ;(defn store-dataset [ns dataset proj-fp]
 ;  (let [file-content (render-db-file ns dataset)
