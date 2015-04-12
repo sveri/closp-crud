@@ -38,14 +38,15 @@
   (let [templ-map (dataset->template-map ns dataset)]
     (stenc/render-file "templates/db.mustache" templ-map)))
 
-
-(defn store-db-file [ns string filename proj-fp]
+(ann ^:no-check store-db-file [String String String String -> nil])
+(defn store-db-file [ns file-content filename proj-fp]
   (let [ns-path (str proj-fp "/" (s/replace ns #"\." "/"))
         ns-file-path (str ns-path "/" filename)]
     (faf/create-if-not-exists ns-path)
-    (spit ns-file-path string)))
-;
-;(defn store-dataset [ns dataset proj-fp]
-;  (let [file-content (render-db-file ns dataset)
-;        filename (str (:name dataset) ".clj")]
-;    (store-db-file ns file-content filename proj-fp)))
+    (spit ns-file-path file-content)))
+
+(ann store-dataset [String pt/entity-description String -> nil])
+(defn store-dataset [ns dataset proj-fp]
+  (let [file-content (render-db-file ns dataset)
+        filename (str (:name dataset) ".clj")]
+    (store-db-file ns file-content filename proj-fp)))
