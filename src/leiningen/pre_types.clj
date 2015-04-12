@@ -7,13 +7,12 @@
 
 
 (def cols [[:id "foo"] [:fooname "foo"]])
-;-> [{:colname id} {:colname "fooname"}]
 
 (t/ann mapf [(t/HSequential [Keyword t/Any *]) -> (t/HMap :mandatory {:colname String})])
 (defn mapf [v]
   {:colname (name (first v))})
 
-;(t/ann conv [(t/NonEmptyVec (t/HVec [t/Kw t/Any *]))
-;             -> (t/NonEmptyVec (t/HMap :mandatory {:colname String}))])
-;(defn conv [cols]
-;  (mapv mapf cols))
+(t/ann conv [(t/NonEmptyVec (t/HSequential [t/Kw t/Any *]))
+             -> (t/NonEmptyVec (t/HMap :mandatory {:colname String}))])
+(defn conv [cols]
+  (mapv mapf cols))
