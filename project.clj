@@ -10,7 +10,7 @@
                  [org.clojure/tools.cli "0.3.1"]
                  [de.sveri/clojure-commons "0.2.0"]
                  [clj-time "0.9.0"]
-                 [stencil "0.3.5"]
+                 [selmer "0.8.2"]
                  [com.h2database/h2 "1.4.185"]
                  ]
   :source-paths ["src"]

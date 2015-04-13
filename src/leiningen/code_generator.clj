@@ -1,5 +1,5 @@
 (ns leiningen.code-generator
-  (:require [stencil.core :as stenc]
+  (:require [selmer.parser :as selm]
             [clojure.core.typed :as t :refer [ann]]
             [leiningen.pre-types :as pt]
             [clojure.string :as s]
@@ -21,7 +21,6 @@
 
 (ann dataset->template-map [String pt/entity-description ->
                             (t/HMap :mandatory {:entityname String
-                                                :entityname-upper String
                                                 :ns String
                                                 :cols (t/Option (Seqable (t/HMap :mandatory {:colname String})))})])
 (defn dataset->template-map
@@ -29,14 +28,13 @@
   [ns ds]
   (let [cols (ds-columns->template-columns (:columns ds))]
     {:entityname       (:name ds)
-     :entityname-upper (.toUpperCase ^String (:name ds))
      :ns               (str ns "." (:name ds))
      :cols             cols}))
 
 (ann ^:no-check render-db-file [String pt/entity-description -> String])
 (defn render-db-file [ns dataset]
   (let [templ-map (dataset->template-map ns dataset)]
-    (stenc/render-file "templates/db.mustache" templ-map)))
+    (selm/render-file "templates/db.tmpl" templ-map {:tag-open \[ :tag-close \]})))
 
 (ann ^:no-check store-db-file [String String String String -> nil])
 (defn store-db-file [ns file-content filename proj-fp]

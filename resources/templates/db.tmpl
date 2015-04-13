@@ -1,0 +1,19 @@
+(ns [{ns}]
+  (:require [korma.core :refer [defentity many-to-many select where limit insert values update delete set-fields]])
+  (:import (java.util UUID)))
+
+(declare [{entityname|upper}])
+
+(defentity [{entityname|upper}])
+
+(defn get-all-[{entityname}]s [] (select [{entityname|upper}]))
+
+(defn get-[{entityname}]-by-uuid [uuid] (first (select [{entityname|upper}] (where {:uuid uuid}) (limit 1))))
+
+(defn create-[{entityname}] [[% for col in cols %][{col.colname}] [% endfor %]]
+  (insert [{entityname|upper}] (values {[% for col in cols %]:[{col.colname|upper}] [{col.colname}] [% endfor %] :UUID (str (UUID/randomUUID))})))
+
+(defn update-[{entityname}] [uuid fields]
+  (update [{entityname|upper}] (set-fields fields) (where {:UUID uuid})))
+
+(defn delete-[{entityname}] [uuid] (delete [{entityname|upper}] (where {:UUID uuid})))
