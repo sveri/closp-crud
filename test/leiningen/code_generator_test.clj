@@ -10,7 +10,6 @@
                                   [:age :int :null false]]})
 
 (deftest generate-db-template
-  (println (render-db-file db-ns table1-definition))
   (is (.contains (render-db-file db-ns table1-definition) "get-all-persons"))
   (is (.startsWith (render-db-file db-ns table1-definition) (str "(ns " db-ns)))
   (is (.startsWith (render-db-file db-ns table1-definition) (str "(ns " db-ns))))

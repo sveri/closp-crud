@@ -7,9 +7,20 @@
                                   [:fooname [:varchar 40] :null false]
                                   [:age :int :null false]]})
 
-(def h2-uri "jdbc:h2:mem:test_mem")
+(def table1-definition-with-uuid
+  {:name    "table1"
+   :columns [[:id :int :null false :pk true :autoinc true]
+             [:fooname [:varchar 40] :null false]
+             [:age :int :null false]
+             [:uuid [:varchar 43] :null false]]})
 
+;(def h2-uri "jdbc:h2:mem:test_mem")
 
-;(deftest generate-sql-statements
-;  (let [ct-string (first (ent/generate-sql-statements table1-definition h2-uri))]
-;    (is (.startsWith ct-string "CREATE TABLE PUBLIC.table1"))))
+(defn filter-uuid-cols [cols]
+  (filter #(= :uuid (first %)) cols))
+
+(deftest add-uuid-col
+  (let [cols (:columns (ent/add-uuid-col table1-definition))
+        cols-with-uuid (:columns (ent/add-uuid-col table1-definition-with-uuid))]
+    (is (= 1 (count (filter-uuid-cols cols))))
+    (is (= 1 (count (filter-uuid-cols cols-with-uuid))))))
