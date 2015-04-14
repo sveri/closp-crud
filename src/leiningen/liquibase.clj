@@ -17,7 +17,7 @@
            (liquibase.change.core CreateTableChange)))
 
 (t/ann ^:no-check clj-liquibase.core/make-db-instance [Connection -> Database])
-(t/ann get-db-connection [(t/U t/Keyword (t/HMap)) (t/U nil (t/HMap)) -> Database])
+(t/ann ^:no-check get-db-connection [(t/U t/Keyword (t/HMap)) (t/U nil (t/HMap)) -> Database])
 (defn get-db-connection
   "Create datasource from a given option-map. Some examples are below:
 (make-datasource :derby {:target :memory :database :emp})            ;; embedded databases
@@ -62,6 +62,6 @@
   (mu/! (ch/create-table (:name ent-description)
                     (:columns ent-description))))
 
-(t/ann drop-table-sql [(t/HMap :mandatory {:name String}) -> String])
+(t/ann ^:no-check drop-table-sql [(t/HMap :mandatory {:name String}) -> String])
 (defn drop-table-sql [table1-definition]
   (str "DROP TABLE " (:name table1-definition)))

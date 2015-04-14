@@ -4,9 +4,11 @@
             [leiningen.entities :as ent]
             [clojure.string :as s]
             [leiningen.helper :as h]
-            [leiningen.code-generator :as cg]))
+            [leiningen.code-generator :as cg]
+            [clojure.core.typed :as t]))
 
 ; TODO proper error handling
+(t/ann closp-crud [(t/HMap :mandatory {:closp-crud t/Any}) -> nil])
 (defn closp-crud
   "I don't do a lot."
   [project & args]

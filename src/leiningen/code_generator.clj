@@ -7,16 +7,14 @@
   (:import (clojure.lang Keyword Seqable)))
 
 
-(ann filter-id-columns [(t/NonEmptySeq (t/HSequential [Keyword t/Any *]))
-                        -> (t/Option (Seqable (t/HSequential [Keyword t/Any *])))])
+(ann filter-id-columns [pt/et-columns -> (t/AVec pt/et-column)])
 (defn filter-id-columns [cols]
-  (remove (t/fn [col :- (t/HSequential [Keyword t/Any *])] (= :id (first col))) cols))
+  (vec (remove (t/fn [col :- pt/et-column] (= :id (first col))) cols)))
 
-(ann ds-columns->template-columns [(t/NonEmptySeq (t/HSequential [Keyword t/Any *]))
-                                   -> (t/Option (Seqable (t/HMap :mandatory {:colname String})))])
+(ann ds-columns->template-columns [pt/et-columns -> (t/AVec (t/HMap :mandatory {:colname String}))])
 (defn ds-columns->template-columns [cols]
-  (let [filt-cols (filter-id-columns cols)]
-    (mapv (t/fn [col :- (t/HSequential [Keyword t/Any *])] {:colname (name (first col))}) filt-cols)))
+    (mapv (t/fn [col :- pt/et-column] {:colname (name (first col))})
+          (filter-id-columns cols)))
 
 
 (ann dataset->template-map [String pt/entity-description ->

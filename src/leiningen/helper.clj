@@ -5,7 +5,7 @@
             [de.sveri.clojure.commons.files.faf :as comm-faf]
             [clojure.core.typed :as t]))
 
-(t/ann jdbc-uri->classname [String -> String])
+(t/ann ^:no-check jdbc-uri->classname [String -> String])
 (defn jdbc-uri->classname
   "Maps the jdbc uri to the adapter that clj-liquibase expects"
   [^String uri]
@@ -15,7 +15,7 @@
     :else (throw (IllegalArgumentException. "Either you did not provide a correct jdbc uri, or the protocol is
     not supported yet."))))
 
-(t/ann store-table-migrations [(t/HSeq [String]) String String String -> nil])
+(t/ann ^:no-check store-table-migrations [(t/HSeq [String]) String String String -> nil])
 (defn store-table-migrations [sql-up ent-name sql-down out-path]
   (comm-faf/create-if-not-exists (io/file out-path))
   (let [time-str (time-fmt/unparse (time-fmt/formatters :basic-date-time-no-ms) (time-core/now))
