@@ -12,7 +12,7 @@
                  [clj-time "0.9.0"]
                  [selmer "0.8.2"]
                  [com.h2database/h2 "1.4.185"]
-                 ]
+                 [hiccup "1.0.5"]]
   :source-paths ["src"]
   :test-paths ["test"]
   :profiles {:dev {:resource-paths ["test-resources"]}}
