@@ -3,22 +3,20 @@
             [de.sveri.clojure.commons.files.edn :as comm-edn]
             [leiningen.helper :as h]
             [clojure.core.typed :as t]
-            [leiningen.pre-types :as pt])
-  (:import (clojure.lang Keyword)))
+            [leiningen.pre-types :as pt]))
 
 (t/ann uuid-col pt/et-column)
 (def uuid-col [:uuid [:varchar 43] :null false])
 
-;(t/ann conj-it [pt/et-columns -> pt/et-columns])
-;(defn conj-it [cols]
-;  (conj cols uuid-col))
+(t/ann conj-it [pt/et-columns -> pt/et-columns])
+(defn conj-it [cols]
+  (conj cols uuid-col))
 
 (t/ann add-uuid-col [pt/entity-description -> pt/entity-description])
 (defn add-uuid-col [ent-description]
   (let [cols (:columns ent-description)]
-    (if (empty? (filter (t/fn [col :- pt/et-column] = :uuid (first col)) cols))
-      ;(assoc ent-description :columns (conj-it cols))
-      (assoc ent-description :columns (conj cols uuid-col))
+    (if (empty? (filter (t/fn [col :- pt/et-column] (= :uuid (first col))) cols))
+      (assoc ent-description :columns (conj-it cols))
       ent-description)))
 
 (t/ann ^:no-check load-entity-from-path [String -> t/Any])

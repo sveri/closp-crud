@@ -1,4 +1,5 @@
 {:name    "table1"
  :columns [[:id :int :null false :pk true :autoinc true]
            [:fooname [:varchar 40] :null false]
-           [:age :int :null false]]}
+           [:age :int :null false]
+           [:male :boolean :default true]]}

@@ -17,6 +17,10 @@ Put `[closp-crud "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your project.c
 FIXME: and add an example usage that actually makes sense:
 
     $ lein closp-crud
+    
+## Column definitions
+
+For a complete reference of supported tags please look at: <http://www.liquibase.org/documentation/column.html>
 
 ## License
 
