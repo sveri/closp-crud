@@ -3,7 +3,26 @@
             [clj-time.core :as time-core]
             [clojure.java.io :as io]
             [de.sveri.clojure.commons.files.faf :as comm-faf]
-            [clojure.core.typed :as t]))
+            [clojure.core.typed :as t]
+            [leiningen.pre-types :as pt]
+            [clojure.string :as s]
+            [de.sveri.clojure.commons.files.faf :as faf]))
+
+
+(t/ann filter-id-columns [pt/et-columns -> (t/AVec pt/et-column)])
+(defn filter-id-columns [cols]
+  (vec (remove (t/fn [col :- pt/et-column] (= :id (first col))) cols)))
+
+(t/ann filter-dataset [pt/entity-description -> pt/entity-description])
+(defn filter-dataset [dataset]
+  (assoc dataset :columns (filter-id-columns (:columns dataset))))
+
+(t/ann ^:no-check store-content-in-ns [String String String String -> nil])
+(defn store-content-in-ns [ns filename proj-fp content]
+  (let [ns-path (str proj-fp "/" (s/replace ns #"\." "/"))
+        ns-file-path (str ns-path "/" filename)]
+    (faf/create-if-not-exists ns-path)
+    (spit ns-file-path content)))
 
 (t/ann ^:no-check jdbc-uri->classname [String -> String])
 (defn jdbc-uri->classname
