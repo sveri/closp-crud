@@ -7,11 +7,6 @@
             [leiningen.helper :as h])
   (:import (clojure.lang Seqable)))
 
-(ann ds-columns->template-columns [pt/et-columns -> (t/AVec (t/HMap :mandatory {:colname String}))])
-(defn ds-columns->template-columns [cols]
-    (mapv (t/fn [col :- pt/et-column] {:colname (name (first col))})
-          (h/filter-id-columns cols)))
-
 
 (ann dataset->template-map [String pt/entity-description ->
                             (t/HMap :mandatory {:entityname String
@@ -20,7 +15,7 @@
 (defn dataset->template-map
   "Will remove every column with the name :id"
   [ns ds]
-  (let [cols (ds-columns->template-columns (:columns ds))]
+  (let [cols (h/ds-columns->template-columns (:columns ds))]
     {:entityname       (:name ds)
      :ns               (str ns "." (:name ds))
      :cols             cols}))
@@ -31,7 +26,7 @@
     (selm/render-file "templates/db.tmpl" templ-map {:tag-open \[ :tag-close \]})))
 
 (ann store-dataset [String pt/entity-description String -> nil])
-(defn store-dataset [ns dataset proj-fp]
+(defn store-dataset [ns dataset src-path]
   (let [file-content (render-db-file ns dataset)
         filename (str (:name dataset) ".clj")]
-    (h/store-content-in-ns ns filename proj-fp file-content)))
+    (h/store-content-in-ns ns filename src-path file-content)))

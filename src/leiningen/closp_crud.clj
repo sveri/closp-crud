@@ -4,7 +4,8 @@
             [leiningen.entities :as ent]
             [leiningen.db-code-generator :as dcg]
             [clojure.core.typed :as t]
-            [leiningen.html-creator :as hc])
+            [leiningen.html-creator :as hc]
+            [leiningen.routes-generator :as rg])
   (:import (java.io File)))
 
 ; TODO proper error handling
@@ -18,10 +19,12 @@
         migr-out-path (get-in project [:closp-crud :migrations-output-path])
         ns-db (get-in project [:closp-crud :ns-db])
         ns-routes (get-in project [:closp-crud :ns-routes])
+        ns-layout (get-in project [:closp-crud :ns-layout])
         clj-src (get-in project [:closp-crud :clj-src])
         templ-path (.getAbsolutePath (File. "./" (get-in project [:closp-crud :templates])))
         src-path (.getAbsolutePath (File. "./" clj-src))
         dataset (ent/load-entity-from-path file-in-path)]
     (dcg/store-dataset ns-db dataset src-path)
     (ent/generate-sql-statements (ent/load-entity-from-path file-in-path) jdbc-uri migr-out-path)
-    (hc/store-create-html dataset templ-path)))
+    (hc/store-create-html dataset templ-path)
+    (rg/store-route ns-routes ns-db ns-layout dataset src-path)))

@@ -17,9 +17,14 @@
 (defn filter-dataset [dataset]
   (assoc dataset :columns (filter-id-columns (:columns dataset))))
 
+(t/ann ds-columns->template-columns [pt/et-columns -> (t/AVec (t/HMap :mandatory {:colname String}))])
+(defn ds-columns->template-columns [cols]
+  (mapv (t/fn [col :- pt/et-column] {:colname (name (first col))})
+        (filter-id-columns cols)))
+
 (t/ann ^:no-check store-content-in-ns [String String String String -> nil])
-(defn store-content-in-ns [ns filename proj-fp content]
-  (let [ns-path (str proj-fp "/" (s/replace ns #"\." "/"))
+(defn store-content-in-ns [ns filename src-path content]
+  (let [ns-path (str src-path "/" (s/replace ns #"\." "/"))
         ns-file-path (str ns-path "/" filename)]
     (faf/create-if-not-exists ns-path)
     (spit ns-file-path content)))
