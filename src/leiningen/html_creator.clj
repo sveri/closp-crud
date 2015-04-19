@@ -16,16 +16,16 @@
         btns [[:button.btn.btn-primary {:type "submit"} (str "Add " action)]]]
     (vec (concat form af-token form-groups btns))))
 
-(defn wrap-with-html-body [form]
-  [:html [:body form]])
+(t/ann wrap-with-selmer-extend [String -> String])
+(defn wrap-with-selmer-extend [form]
+  (str "{% extends \"base.html\" %}\r\n{% block content %}\r\n" form "\r\n{% endblock %}"))
 
 (t/ann create-html [pt/entity-description -> String])
 (defn create-html [dataset]
   (let [cleaned-dataset (h/filter-dataset dataset)
         form-groups (map #(wrap-with-form-group (ds-conv/dt->hiccup %)) (:columns cleaned-dataset))
-        comp-form (wrap-create-with-form (:name dataset) form-groups)
-        comp-html (wrap-with-html-body comp-form)]
-    (hicc/html comp-html)))
+        comp-form (wrap-create-with-form (:name dataset) form-groups)]
+    (wrap-with-selmer-extend (hicc/html comp-form)) ))
 
 (defn store-create-html [dataset templ-path]
   (let [folder-path (str (str templ-path "/" (:name dataset)))

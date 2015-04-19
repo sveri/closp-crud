@@ -30,7 +30,7 @@
   (try
     (db/update-[{ent-name}] uuid {[% for col in cols %]:[{col.colname|upper}] [{col.colname}] [% endfor %] })
     (catch Exception e (timb/error e (str "Something went wrong updating: " uuid))
-                       (layout/flash-result (str "An error occured.") "alert-danger")))
+                       (layout/flash-result (str "An error occured.") "alert-danger"))))
 
 (defn delete [uuid delete_cancel]
   (when (= "Delete" delete_cancel)
@@ -38,7 +38,7 @@
      (db/delete-[{ent-name}] uuid)
      (catch Exception e (timb/error e (str "Something went wrong deleting: " uuid))
                         (layout/flash-result (str "An error occured.") "alert-danger"))))
-  (resp/redirect "/[{ent-name}]")))
+  (resp/redirect "/[{ent-name}]"))
 
 (defn [{ent-name}]-routes []
   (routes
@@ -46,6 +46,6 @@
     (GET "/[{ent-name}]/create" [] (create-page))
     (GET "/[{ent-name}]/:uuid" [uuid] (update-page uuid))
     (POST "/[{ent-name}]/create" [[% for col in cols %][{col.colname}] [% endfor %]] (create [% for col in cols %][{col.colname}] [% endfor %]))
-    (POST "/[{ent-name}]/delete" [uuid] (delete-page uuid))
-    (POST "/[{ent-name}]/delete/delete" [uuid delete_cancel] (delete uuid delete_cancel))
+    (GET "/[{ent-name}]/delete/:uuid" [uuid] (delete-page uuid))
+    (POST "/[{ent-name}]/delete" [uuid delete_cancel] (delete uuid delete_cancel))
     (POST "/[{ent-name}]/update" [uuid [% for col in cols %][{col.colname}] [% endfor %]] (update uuid [% for col in cols %][{col.colname}] [% endfor %]))))
