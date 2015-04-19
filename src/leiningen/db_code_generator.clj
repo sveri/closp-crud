@@ -1,4 +1,4 @@
-(ns leiningen.code-generator
+(ns leiningen.db-code-generator
   (:require [selmer.parser :as selm]
             [clojure.core.typed :as t :refer [ann]]
             [leiningen.pre-types :as pt]
@@ -29,13 +29,6 @@
 (defn render-db-file [ns dataset]
   (let [templ-map (dataset->template-map ns dataset)]
     (selm/render-file "templates/db.tmpl" templ-map {:tag-open \[ :tag-close \]})))
-
-;(ann ^:no-check store-db-file [String String String String -> nil])
-;(defn store-db-file [ns file-content filename proj-fp]
-;  (let [ns-path (str proj-fp "/" (s/replace ns #"\." "/"))
-;        ns-file-path (str ns-path "/" filename)]
-;    (faf/create-if-not-exists ns-path)
-;    (spit ns-file-path file-content)))
 
 (ann store-dataset [String pt/entity-description String -> nil])
 (defn store-dataset [ns dataset proj-fp]

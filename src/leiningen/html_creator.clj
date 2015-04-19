@@ -11,13 +11,13 @@
   (vec (concat [:div.form-group] col-vec)))
 
 (defn wrap-create-with-form [action form-groups]
-  (let [form [:form {:action (str "/" action "/add")}]
+  (let [form [:form {:action (str "/" action "/create" :method "post")}]
+        af-token [[:input {:name "__anti-forgery-token" :type "hidden" :value "{{af-token}}"}]]
         btns [[:button.btn.btn-primary {:type "submit"} (str "Add " action)]]]
-    (vec (concat form form-groups btns))))
+    (vec (concat form af-token form-groups btns))))
 
 (defn wrap-with-html-body [form]
   [:html [:body form]])
-
 
 (t/ann create-html [pt/entity-description -> String])
 (defn create-html [dataset]

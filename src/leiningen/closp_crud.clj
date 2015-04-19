@@ -2,7 +2,7 @@
   (:require [leiningen.cli-options :as opt-helper]
             [clojure.tools.cli :as t-cli]
             [leiningen.entities :as ent]
-            [leiningen.code-generator :as cg]
+            [leiningen.db-code-generator :as dcg]
             [clojure.core.typed :as t]
             [leiningen.html-creator :as hc])
   (:import (java.io File)))
@@ -22,6 +22,6 @@
         templ-path (.getAbsolutePath (File. "./" (get-in project [:closp-crud :templates])))
         src-path (.getAbsolutePath (File. "./" clj-src))
         dataset (ent/load-entity-from-path file-in-path)]
-    (cg/store-dataset ns-db dataset src-path)
+    (dcg/store-dataset ns-db dataset src-path)
     (ent/generate-sql-statements (ent/load-entity-from-path file-in-path) jdbc-uri migr-out-path)
     (hc/store-create-html dataset templ-path)))

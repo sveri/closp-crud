@@ -27,13 +27,16 @@
                          (if (vector? s) (first s) s))))
 
 (defmethod dt->hiccup :int [col]
-  (wrap-with-vec-and-label col [:input.form-control (merge-required {:id (name (first col))} col)]))
+  (wrap-with-vec-and-label col [:input.form-control (merge-required {:id (name (first col))
+                                                                     :name (name (first col))} col)]))
 
 (defmethod dt->hiccup :varchar [col]
   {:pre [(second (second col))]}
   (wrap-with-vec-and-label
     col
-    [:input.form-control (merge-required {:id (name (first col)) :maxlength (nth
+    [:input.form-control (merge-required {:id (name (first col))
+                                          :name (name (first col))
+                                          :maxlength (nth
                                                                               (nth col 1)
                                                                               1)} col)]))
 
@@ -45,7 +48,9 @@
     col
     (let [col-m (apply assoc (sorted-map) col)]
       [:input.form-control (merge (when (= true (:default col-m)) {:checked "checked"})
-                                  (merge-required {:id (name (first col))} col))])))
+                                  (merge-required {:id (name (first col))
+                                                   :name (name (first col))} col))])))
 
 (defmethod dt->hiccup :default [col]
-  (wrap-with-vec-and-label col [:input.form-control (merge-required {:id (name (first col))} col)]))
+  (wrap-with-vec-and-label col [:input.form-control (merge-required {:id (name (first col))
+                                                                     :name (name (first col))} col)]))
