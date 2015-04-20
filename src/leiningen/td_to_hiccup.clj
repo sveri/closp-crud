@@ -4,24 +4,19 @@
   (:import (clojure.lang Keyword)))
 
 
-(defalias html-label (t/HVec [Keyword (t/HMap :mandatory {:for String}) String]))
-(defalias form-map (t/HMap :mandatory {:id String}
-                           :optional {:required String}
-                           :complete? false))
-(defalias html-form (t/HVec [Keyword form-map t/Any *]))
-(defalias html-form-group (t/HVec [html-label html-form]))
 
-(t/ann wrap-with-vec-and-label [pt/et-column html-form -> html-form-group])
+(t/ann wrap-with-vec-and-label [pt/et-column pt/html-form -> pt/html-form-group])
 (defn wrap-with-vec-and-label [col hicc-col]
   [(let [n (name (first col))] [:label {:for n} n]) hicc-col])
 
-(t/ann merge-required [form-map pt/et-column -> form-map])
+(t/ann merge-required [pt/form-map pt/et-column -> pt/form-map])
 (defn merge-required [m col]
   (if (and (nth col 2) (= (nth col 2) :null))
     (merge m {:required "required"})
     m))
 
-(t/ann ^:no-check dt->hiccup [(t/HVec [Keyword (t/U Keyword (t/HVec [Keyword Number])) t/Any t/Any *]) -> html-form-group])
+(t/ann ^:no-check dt->hiccup [(t/HVec [Keyword (t/U Keyword (t/HVec [Keyword Number])) t/Any t/Any *])
+                              -> pt/html-form-group])
 (defmulti dt->hiccup (t/fn [col :- (t/HVec [Keyword (t/U Keyword (t/HVec [Keyword Number])) t/Any t/Any *])]
                        (let [[_ s] col]
                          (if (vector? s) (first s) s))))

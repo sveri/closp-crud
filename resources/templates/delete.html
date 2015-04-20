@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method="post" action="/[{entityname}]/delete">
+    <input name="__anti-forgery-token" type="hidden" value="{{af-token}}"/>
+    <input type="hidden" name="uuid" value="{{uuid}}"/>
+    <p><b>Do yo really want to delete [{entityname}]: {{uuid}}</b></p>
+    <input type="submit" name="delete_cancel" value="Cancel" class="btn btn-primary">
+    <input type="submit" name="delete_cancel" value="Delete" class="btn btn-danger">
+</form>
+
+{% endblock %}

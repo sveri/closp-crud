@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a href="/[{entityname}]/create" class="btn btn-primary" role="button">Create New [{entityname}]</a>
+
+<hr>
+
+<table class="table">
+    <thead>
+        <tr>
+            {% for col in cols %}
+                <td><b>{{col}}</b></td>
+            {% endfor %}
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for [{entityname}] in [{entityname}]s %}
+            <tr>
+                [{tds}]
+                <td><a href="/table1/{{table1.UUID}}">{{table1.FOONAME}}</a></td>
+                <td>{{table1.AGE}}</td>
+                <td><a href="/table1/delete/{{table1.UUID}}" class="btn btn-primary">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
