@@ -8,7 +8,7 @@
 
 (defn get-all-[{entityname}]s [] (select [{entityname|upper}]))
 
-(defn get-[{entityname}]-by-uuid [uuid] (first (select [{entityname|upper}] (where {:uuid uuid}) (limit 1))))
+(defn get-[{entityname}]-by-uuid [uuid] (first (select [{entityname|upper}] (where {:UUID uuid}) (limit 1))))
 
 (defn create-[{entityname}] [[% for col in cols %][{col.colname}] [% endfor %]]
   (insert [{entityname|upper}] (values {[% for col in cols %]:[{col.colname|upper}] [{col.colname}] [% endfor %] :UUID (str (UUID/randomUUID))})))

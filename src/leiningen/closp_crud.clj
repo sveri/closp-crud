@@ -26,5 +26,5 @@
         dataset (ent/load-entity-from-path file-in-path)]
     (dcg/store-dataset ns-db dataset src-path)
     (ent/generate-sql-statements (ent/load-entity-from-path file-in-path) jdbc-uri migr-out-path)
-    (hc/store-create-template dataset templ-path)
+    (hc/store-html-files dataset templ-path)
     (rg/store-route ns-routes ns-db ns-layout dataset src-path)))
