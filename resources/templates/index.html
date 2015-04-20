@@ -20,7 +20,7 @@
                 [{tds}]
                 <td><a href="/table1/{{table1.UUID}}">{{table1.FOONAME}}</a></td>
                 <td>{{table1.AGE}}</td>
-                <td><a href="/table1/delete/{{table1.UUID}}" class="btn btn-primary">Delete</a></td>
+                <td><a href="/[{entityname}]/delete/{{[{entityname}].UUID}}" class="btn btn-primary">Delete</a></td>
             </tr>
         {% endfor %}
     </tbody>
