@@ -17,10 +17,7 @@
     <tbody>
         {% for [{entityname}] in [{entityname}]s %}
             <tr>
-                [{tds}]
-                <td><a href="/table1/{{table1.UUID}}">{{table1.FOONAME}}</a></td>
-                <td>{{table1.AGE}}</td>
-                <td><a href="/[{entityname}]/delete/{{[{entityname}].UUID}}" class="btn btn-primary">Delete</a></td>
+                [{tds|safe}]
             </tr>
         {% endfor %}
     </tbody>

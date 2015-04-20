@@ -49,3 +49,7 @@
 (defmethod dt->hiccup [:default :create] [col _]
   (wrap-with-vec-and-label col [:input.form-control (merge-required {:id   (name (first col))
                                                                      :name (name (first col))} col)]))
+
+(defmethod dt->hiccup [:int :index] [col _]
+  (wrap-with-vec-and-label col [:input.form-control (merge-required {:id   (name (first col))
+                                                                     :name (name (first col))} col)]))
