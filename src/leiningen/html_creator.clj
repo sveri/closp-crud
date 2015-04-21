@@ -6,7 +6,7 @@
             [leiningen.helper :as h]
             [de.sveri.clojure.commons.files.faf :as faf]
             [selmer.parser :as selm])
-  (:import (clojure.lang Seqable)))
+  (:import (clojure.lang Seqable Keyword)))
 
 (t/ann get-and-create-templ-fp-path! [String String pt/entity-description -> String])
 (defn- get-and-create-templ-fp-path! [filename templ-path dataset]
@@ -15,8 +15,13 @@
     (faf/create-if-not-exists folder-path)
     fp))
 
-(t/ann wrap-with-form-group [])
-(defn wrap-with-form-group [col-vec]
+(t/ann wrap-with-form-group [pt/html-form-group -> (t/HVec [Keyword pt/html-form-group])])
+(defmulti wrap-with-form-group (fn [col-vec] (:type (second (second col-vec)))) )
+
+(defmethod wrap-with-form-group "checkbox" [col-vec]
+  (vec (concat [:div] col-vec)))
+
+(defmethod wrap-with-form-group :default [col-vec]
   (vec (concat [:div.form-group] col-vec)))
 
 (t/ann wrap-create-with-form [String (Seqable pt/html-form-group) -> (t/HVec [t/Any])])
@@ -36,14 +41,10 @@
   (let [cleaned-dataset (h/filter-dataset dataset)
         form-groups (map #(wrap-with-form-group (ds-conv/dt->hiccup % (:name dataset) :create))
                          (:columns cleaned-dataset))
-        form-groups-str (hicc/html form-groups)
-        ;comp-form (wrap-create-with-form (:name dataset) form-groups)
-        ]
+        form-groups-str (hicc/html form-groups)]
     (selm/render-file "templates/create.html" {:entityname (:name dataset)
                                                :form-groups form-groups-str}
-                      {:tag-open \[ :tag-close \]})
-    ;(wrap-with-selmer-extend (hicc/html comp-form))
-    ))
+                      {:tag-open \[ :tag-close \]})))
 
 (t/ann store-create-template [pt/entity-description String -> nil])
 (defn store-create-template [dataset templ-path]

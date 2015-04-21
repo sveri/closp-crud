@@ -6,7 +6,12 @@
 
 
 (t/ann wrap-with-vec-and-label [pt/et-column pt/html-form -> pt/html-form-group])
-(defn wrap-with-vec-and-label [col hicc-col]
+(defmulti wrap-with-vec-and-label (fn [_ hicc-col] (:type (second hicc-col))))
+
+(defmethod wrap-with-vec-and-label "checkbox" [col hicc-col]
+  [(let [n (name (first col))] [:label hicc-col n])])
+
+(defmethod wrap-with-vec-and-label :default [col hicc-col]
   [(let [n (name (first col))] [:label {:for n} n]) hicc-col])
 
 (t/ann merge-required [pt/form-map String pt/et-column -> pt/form-map])
@@ -17,7 +22,7 @@
 
 (t/ann ^:no-check dt->hiccup [pt/et-column Keyword -> pt/html-form-group])
 (defmulti dt->hiccup
-          (t/fn [col :- pt/et-column ent-name :- String t :- Keyword]
+          (t/fn [col :- pt/et-column _ :- String t :- Keyword]
             (let [[_ s] col]
               [(if (vector? s) (first s) s) t])))
 
@@ -44,7 +49,8 @@
     (let [col-m (apply assoc (sorted-map) col)]
       [:input.form-control (merge (when (= true (:default col-m)) {:checked "checked"})
                                   (merge-required {:id   (name (first col))
-                                                   :name (name (first col))}
+                                                   :name (name (first col))
+                                                   :type "checkbox"}
                                                   ent-name col))])))
 
 (defmethod dt->hiccup [:default :create] [col ent-name _]

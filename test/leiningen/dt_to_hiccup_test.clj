@@ -25,7 +25,7 @@
          (tth/dt->hiccup char-c "fooname" :create))))
 
 (deftest conv-boolean
-  (is (= [[:label {:for "male"} "male"]
-          [:input.form-control {:id "male" :checked "checked" :name "male"}]] (tth/dt->hiccup bool-c "fooname" :create)))
-  (is (= [[:label {:for "male"} "male"]
-          [:input.form-control {:id "male" :name "male"}]] (tth/dt->hiccup (assoc bool-c 3 false) "fooname" :create))))
+  (is (= [[:label [:input.form-control {:id "male" :checked "checked" :name "male" :type "checkbox"}] "male"]]
+         (tth/dt->hiccup bool-c "fooname" :create)))
+  (is (= [[:label [:input.form-control {:id "male" :name "male" :type "checkbox"}] "male"]]
+         (tth/dt->hiccup (assoc bool-c 3 false) "fooname" :create))))

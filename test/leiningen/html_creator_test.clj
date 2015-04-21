@@ -5,7 +5,7 @@
 (def table1-definition {:name    "table1"
                         :columns [[:id :int :null false :pk true :autoinc true]
                                   [:fooname [:varchar 40] :null false]
-                                  [:age :int :null false]]})
+                                  [:male :boolean :null false]]})
 
 (deftest create-html
   (let [html (ht/create-html table1-definition)]
