@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form action="/[{entityname}]/{{create_update|lower}}" method="post">
+    <input name="__anti-forgery-token" type="hidden" value="{{af-token}}"/>
+    <input name="uuid" type="hidden" value="{{[{entityname}].UUID}}"/>
+    [{form-groups}]
+    <div class="form-group"><label for="fooname">fooname</label>
+        <input class="form-control" id="fooname" maxlength="40" name="fooname"
+               required="required" value="{{table1.FOONAME}}"/></div>
+    <div class="form-group"><label for="age">age</label>
+        <input class="form-control" name="age" id="age" required="required" value="{{table1.AGE}}" /></div>
+    <button class="btn btn-primary" type="submit">{{create_update}} [{entityname}]</button>
+</form>
+
+{% endblock %}

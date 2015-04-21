@@ -9,22 +9,23 @@
 (def bool-c [:male :boolean :default true])
 
 (deftest conv-int
-  (is (= [[:label {:for "id"} "id"] [:input.form-control {:id "id" :required "required" :name "id"}]]
-         (tth/dt->hiccup int-c :create))))
+  (is (= [[:label {:for "id"} "id"] [:input.form-control {:id "id" :required "required" :name "id"
+                                                          :value "{{fooname.ID}}"}]]
+         (tth/dt->hiccup int-c "fooname" :create))))
 
 (deftest conv-varchar
   (is (= [[:label {:for "name"} "name"]
-          [:input.form-control {:id "name" :required "required" :maxlength 40 :name "name"}]]
-         (tth/dt->hiccup varchar-c :create)))
-  (is (thrown? AssertionError (tth/dt->hiccup varchar-invalid-c :create))))
+          [:input.form-control {:id "name" :required "required" :maxlength 40 :name "name" :value "{{fooname.NAME}}"}]]
+         (tth/dt->hiccup varchar-c "fooname" :create)))
+  (is (thrown? AssertionError (tth/dt->hiccup varchar-invalid-c "fooname" :create))))
 
 (deftest conv-char
   (is (= [[:label {:for "name"} "name"]
-          [:input.form-control {:id "name" :required "required" :maxlength 40 :name "name"}]]
-         (tth/dt->hiccup char-c :create))))
+          [:input.form-control {:id "name" :required "required" :maxlength 40 :name "name" :value "{{fooname.NAME}}"}]]
+         (tth/dt->hiccup char-c "fooname" :create))))
 
 (deftest conv-boolean
   (is (= [[:label {:for "male"} "male"]
-          [:input.form-control {:id "male" :checked "checked" :name "male"}]] (tth/dt->hiccup bool-c :create)))
+          [:input.form-control {:id "male" :checked "checked" :name "male"}]] (tth/dt->hiccup bool-c "fooname" :create)))
   (is (= [[:label {:for "male"} "male"]
-          [:input.form-control {:id "male" :name "male"}]] (tth/dt->hiccup (assoc bool-c 3 false) :create))))
+          [:input.form-control {:id "male" :name "male"}]] (tth/dt->hiccup (assoc bool-c 3 false) "fooname" :create))))

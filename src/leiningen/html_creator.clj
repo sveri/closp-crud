@@ -21,7 +21,7 @@
 
 (t/ann wrap-create-with-form [String (Seqable pt/html-form-group) -> (t/HVec [t/Any])])
 (defn wrap-create-with-form [action form-groups]
-  (let [form [:form {:action (str "/" action "/create" :method "post")}]
+  (let [form [:form {:action (str "/" action "/create") :method "post"}]
         af-token [[:input {:name "__anti-forgery-token" :type "hidden" :value "{{af-token}}"}]]
         btns [[:button.btn.btn-primary {:type "submit"} (str "Add " action)]]]
     (vec (concat form af-token form-groups btns))))
@@ -34,9 +34,16 @@
 (t/ann create-html [pt/entity-description -> String])
 (defn create-html [dataset]
   (let [cleaned-dataset (h/filter-dataset dataset)
-        form-groups (map #(wrap-with-form-group (ds-conv/dt->hiccup % :create)) (:columns cleaned-dataset))
-        comp-form (wrap-create-with-form (:name dataset) form-groups)]
-    (wrap-with-selmer-extend (hicc/html comp-form))))
+        form-groups (mapv #(wrap-with-form-group (ds-conv/dt->hiccup % (:name dataset) :create))
+                         (:columns cleaned-dataset))
+        form-groups-str (hicc/html form-groups)
+        ;comp-form (wrap-create-with-form (:name dataset) form-groups)
+        ]
+    (selm/render-file "templates/create.html" {:entityname (:name dataset)
+                                               :form-groups form-groups-str}
+                      {:tag-open \[ :tag-close \]})
+    ;(wrap-with-selmer-extend (hicc/html comp-form))
+    ))
 
 (t/ann store-create-template [pt/entity-description String -> nil])
 (defn store-create-template [dataset templ-path]

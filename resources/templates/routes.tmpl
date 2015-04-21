@@ -7,7 +7,7 @@
             [[{ns-layout}] :as layout]))
 
 (defn index-page []
-  (layout/render "/[{ent-name}]/index.html" {:table1s (db/get-all-[{ent-name}]s) :cols [[% for col in cols %]"[{col.colname}]" [% endfor %]]}))
+  (layout/render "/[{ent-name}]/index.html" {:[{ent-name}]s (db/get-all-[{ent-name}]s) :cols [[% for col in cols %]"[{col.colname}]" [% endfor %]]}))
 
 (defn create-page []
   (layout/render "/[{ent-name}]/create.html" {:create_update "Create"}))
