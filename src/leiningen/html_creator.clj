@@ -34,7 +34,7 @@
 (t/ann create-html [pt/entity-description -> String])
 (defn create-html [dataset]
   (let [cleaned-dataset (h/filter-dataset dataset)
-        form-groups (mapv #(wrap-with-form-group (ds-conv/dt->hiccup % (:name dataset) :create))
+        form-groups (map #(wrap-with-form-group (ds-conv/dt->hiccup % (:name dataset) :create))
                          (:columns cleaned-dataset))
         form-groups-str (hicc/html form-groups)
         ;comp-form (wrap-create-with-form (:name dataset) form-groups)

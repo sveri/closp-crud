@@ -4,7 +4,7 @@
 <form action="/[{entityname}]/{{create_update|lower}}" method="post">
     <input name="__anti-forgery-token" type="hidden" value="{{af-token}}"/>
     <input name="uuid" type="hidden" value="{{[{entityname}].UUID}}"/>
-    [{form-groups}]
+    [{form-groups|safe}]
     <div class="form-group"><label for="fooname">fooname</label>
         <input class="form-control" id="fooname" maxlength="40" name="fooname"
                required="required" value="{{table1.FOONAME}}"/></div>
