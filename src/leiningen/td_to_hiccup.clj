@@ -48,10 +48,9 @@
     col
     (let [col-m (apply assoc (sorted-map) col)]
       [:input.form-control (merge (when (= true (:default col-m)) {:checked "checked"})
-                                  (merge-required {:id   (name (first col))
-                                                   :name (name (first col))
-                                                   :type "checkbox"}
-                                                  ent-name col))])))
+                                  {:id   (name (first col))
+                                   :name (name (first col))
+                                   :type "checkbox"})])))
 
 (defmethod dt->hiccup [:default :create] [col ent-name _]
   (wrap-with-vec-and-label col [:input.form-control (merge-required {:id   (name (first col))

@@ -5,6 +5,8 @@
             [taoensso.timbre :as timb]
             [[{ns-db}] :as db]
             [[{ns-layout}] :as layout]))
+            
+[{add-fns}]
 
 (defn index-page []
   (layout/render "/[{ent-name}]/index.html" {:[{ent-name}]s (db/get-all-[{ent-name}]s) :cols [[% for col in cols %]"[{col.colname}]" [% endfor %]]}))
