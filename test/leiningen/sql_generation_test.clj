@@ -16,8 +16,7 @@
     (is (.startsWith cs-string "CREATE TABLE PUBLIC.table1"))
     (is (.contains cs-string "fooname"))
     (is (.contains cs-string "age"))
-    (is (.contains cs-string "male BOOLEAN DEFAULT TRUE"))
-    (println cs-string)))
+    (is (.contains cs-string "male BOOLEAN DEFAULT TRUE"))))
 
 (deftest drop-table-h2
   (is (= (str "DROP TABLE " (:name table1-definition)) (liq/drop-table-sql table1-definition))))
