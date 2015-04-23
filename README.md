@@ -3,6 +3,20 @@
 A Leiningen plugin to provide CRUD functionality for clojure web projects. Optimized for the usage
 within <https://github.com/sveri/closp>.
 
+## Rationale
+
+I find it tedious to create a lot of stuff manually like most developers do. And some day while playing around 
+with clojure web stuff it occured to me that I need some kind of CRUD functionality again and again.
+
+That's why I started **closp-crud**. It's the first release and does not contain much functionality. However, it should
+be enough to get going with a very basic UI.
+
+### Disclaimer
+
+I only did some basic tests. Given the fact that there are many million differnt ways this library can be used, please
+be aware that there will be bugs and missing functionality. I am happy about either, bug reports or pull requests.
+Also suggestions of any kind are welcome.
+
 ## Usage
 
 There are two ways to use **closp-crud**. First, you can use it standalone or second
