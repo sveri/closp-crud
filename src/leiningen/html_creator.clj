@@ -91,4 +91,5 @@
 (defn store-html-files [dataset templ-path]
   (store-create-template dataset templ-path)
   (store-delete-template dataset templ-path)
-  (store-index-template dataset templ-path))
+  (store-index-template dataset templ-path)
+  (println "Generated HTML templates."))

@@ -11,7 +11,6 @@
 ; TODO proper error handling
 ;(t/ann closp-crud [(t/HMap :mandatory {:closp-crud t/Any}) -> nil])
 (defn closp-crud
-  "I don't do a lot."
   [project & args]
   (let [{:keys [options arguments errors summary]} (t-cli/parse-opts args opt-helper/cli-options)
         file-in-path (:filepath options)
@@ -27,4 +26,5 @@
     (dcg/store-dataset ns-db dataset src-path)
     (ent/generate-sql-statements (ent/load-entity-from-path file-in-path) jdbc-uri migr-out-path)
     (hc/store-html-files dataset templ-path)
-    (rg/store-route ns-routes ns-db ns-layout dataset src-path)))
+    (rg/store-route ns-routes ns-db ns-layout dataset src-path)
+    (println "Done.")))
