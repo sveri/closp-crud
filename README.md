@@ -5,19 +5,12 @@ within <https://github.com/sveri/closp>.
 
 ## Usage
 
-Put `[closp-crud "0.1.0"]` into the `:plugins` vector of your `project.clj` file.
+There are two ways to use **closp-crud**. First, you can use it standalone or second
+as part of [closp](https://github.com/sveri/closp) which it comes integrated with.
 
-Then add the configuration to your `project.clj` file like this (see below for explanation of options):
+### As part of **closp**
 
-    :closp-crud {:jdbc-url "jdbc:h2:mem:test_mem"
-                 :migrations-output-path "./migrations"
-                 :clj-src "src/clj"
-                 :ns-db "de.sveri.siwf.db"
-                 :ns-routes "de.sveri.siwf.routes"
-                 :ns-layout "de.sveri.siwf.layout"
-                 :templates "resources/templates"}
-
-Next you need a table definition in a file somwhere. It may look like this:
+You need a table definition in a file somewhere. It may look like this:
 
     ; closp-definitions/person.edn
     {:name    "person"
@@ -39,7 +32,49 @@ the person table using [korma](https://github.com/korma/Korma/)
 and noir.
 * Several html files containing three templates: `index.html, create.html and delete.html`
 
-Finally you need to add the generated routes definiton from `routes/person.clj` to your handler.
+Finally you need to add the generated routes definition (person-routes) from `routes/person.clj` to your handler in
+`ns.handler` in the `get-handler` function under *;; add your application routes here*.
+ 
+### Standalone
+
+Please be aware that **closp-crud** is tied to *closp*. It is possible to run it standalone,
+but expects a certain structure, some dependencies and existing functions to call.
+
+Put `[closp-crud "0.1.0"]` into the `:plugins` vector of your `project.clj` file.
+
+Then add the configuration to your `project.clj` file like this (see below for explanation of options):
+
+    :closp-crud {:jdbc-url "jdbc:h2:mem:test_mem"
+                 :migrations-output-path "./migrations"
+                 :clj-src "src/clj"
+                 :ns-db "de.sveri.siwf.db"
+                 :ns-routes "de.sveri.siwf.routes"
+                 :ns-layout "de.sveri.siwf.layout"
+                 :templates "resources/templates"}
+
+Next you need a table definition in a file somewhere. It may look like this:
+
+    ; closp-definitions/person.edn
+    {:name    "person"
+     :columns [[:id :int :null false :pk true :autoinc true]
+               [:name [:varchar 40] :null false]
+               [:age :int :null false]
+               [:male :boolean :default true]]}
+               
+Then run
+
+    $ lein closp-crud -f closp-definitions/person.edn
+    
+This will generate several files:
+
+* Up and down file in `./migrations` containing the SQL code to create and drop a person table.
+* A database clj source file in `de/sveri/siwf/db/person.clj` containing the source to do CRUD operations on 
+the person table using [korma](https://github.com/korma/Korma/)
+* A routes clj source file in `de/sveri/siwf/routes/person.clj` containing the route definitions using compojure
+and noir.
+* Several html files containing three templates: `index.html, create.html and delete.html`
+
+Finally you need to add the generated routes definition from `routes/person.clj` to your handler.
 
 ## Data Deletion Warning
 Running `lein closp-crud` silently overwrites existing namespaces with the same name as defined in the 
@@ -160,7 +195,6 @@ For a complete reference of supported tags please look at: <http://www.liquibase
 
 ## License
 
-Copyright © 2015 FIXME
+Copyright © 2015 Sven Richter
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Eclipse Public License version 1.0.

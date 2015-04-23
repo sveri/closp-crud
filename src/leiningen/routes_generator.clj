@@ -25,6 +25,7 @@
                        :ns-db     (str ns-db "." (:name dataset))
                        :ns-layout ns-layout
                        :cols      (h/ds-columns->template-columns (:columns dataset))
+                       :functionized-cols (h/ds-columns->template-columns (:columns dataset) true)
                        :ent-name  (:name dataset)
                        :add-fns   (create-add-fns (:columns dataset))}
                       {:tag-open \[ :tag-close \]})

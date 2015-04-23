@@ -17,9 +17,16 @@
 (defn filter-dataset [dataset]
   (assoc dataset :columns (filter-id-columns (:columns dataset))))
 
+(t/ann get-colname-or-bool-convert [pt/et-column -> String])
+(defn- get-colname-or-bool-convert [col]
+  (let [name (name (first col))]
+    (if (= :boolean (second col)) (str "(convert-boolean " name ")") name)))
+
 (t/ann ds-columns->template-columns [pt/et-columns -> (t/AVec (t/HMap :mandatory {:colname String}))])
-(defn ds-columns->template-columns [cols]
-  (mapv (t/fn [col :- pt/et-column] {:colname (name (first col))})
+(defn ds-columns->template-columns [cols & [functionize]]
+  (mapv (t/fn [col :- pt/et-column]
+          {:colname (name (first col))
+           :colname-fn (get-colname-or-bool-convert col)})
         (filter-id-columns cols)))
 
 (t/ann ^:no-check store-content-in-ns [String String String String -> nil])
