@@ -207,6 +207,12 @@ autoincrement
 
 For a complete reference of supported tags please look at: <http://www.liquibase.org/documentation/column.html>
 
+## Changes
+
+### 0.1.1
+
+* Don't overwrite existing files, cancel everything in case a file exists already.
+
 ## License
 
 Copyright © 2015 Sven Richter
