@@ -10,7 +10,7 @@
 
 (t/ann get-and-create-templ-fp-path! [String String pt/entity-description -> String])
 (defn- get-and-create-templ-fp-path! [filename templ-path dataset]
-  (let [folder-path (str (str templ-path "/" (:name dataset)))
+  (let [folder-path (str templ-path "/" (:name dataset))
         fp (str folder-path "/" filename)]
     (faf/create-if-not-exists folder-path)
     fp))

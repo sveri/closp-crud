@@ -29,6 +29,10 @@
            :colname-fn (get-colname-or-bool-convert col)})
         (filter-id-columns cols)))
 
+(t/ann get-ns-file-path [String String String -> String])
+(defn get-ns-file-path [ns filename src-path]
+  (str src-path "/" (s/replace ns #"\." "/") "/" filename))
+
 (t/ann ^:no-check store-content-in-ns [String String String String -> nil])
 (defn store-content-in-ns [ns filename src-path content]
   (let [ns-path (str src-path "/" (s/replace ns #"\." "/"))
