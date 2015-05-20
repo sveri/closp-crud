@@ -16,7 +16,7 @@
 
 (t/ann merge-required [pt/form-map String pt/et-column -> pt/form-map])
 (defn merge-required [m ent-name col]
-  (if (and (nth col 2) (= (nth col 2) :null))
+  (if (and (< 2 (count col)) (= (nth col 2) :null))
     (merge m {:required "required" :value (str "{{" ent-name "." (.toUpperCase (name (first col))) "}}")})
     m))
 
@@ -52,12 +52,17 @@
                                    :name (name (first col))
                                    :type "checkbox"})])))
 
-(defmethod dt->hiccup [:default :create] [col ent-name _]
+(defmethod dt->hiccup [:int :index] [col ent-name _]
   (wrap-with-vec-and-label col [:input.form-control (merge-required {:id   (name (first col))
                                                                      :name (name (first col))}
                                                                     ent-name col)]))
 
-(defmethod dt->hiccup [:int :index] [col ent-name _]
+(defmethod dt->hiccup [:text :create] [col ent-name _]
+  (wrap-with-vec-and-label col [:textarea.form-control (merge-required {:id   (name (first col))
+                                                                        :name (name (first col))}
+                                                                       ent-name col)]))
+
+(defmethod dt->hiccup :default [col ent-name _]
   (wrap-with-vec-and-label col [:input.form-control (merge-required {:id   (name (first col))
                                                                      :name (name (first col))}
                                                                     ent-name col)]))

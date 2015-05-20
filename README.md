@@ -218,6 +218,8 @@ into the frontend.
 ### 0.1.1
 
 * Don't overwrite existing files, cancel everything in case a file exists already.
+* Fix default handler for  hiccup generation
+* Add handler for text fields
 
 ## License
 
