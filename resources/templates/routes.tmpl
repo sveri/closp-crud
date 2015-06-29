@@ -9,17 +9,17 @@
 [{add-fns|safe}]
 
 (defn index-page []
-  (layout/render "/[{ent-name}]/index.html" {:[{ent-name}]s (db/get-all-[{ent-name}]s) :cols [[% for col in cols %]"[{col.colname}]" [% endfor %]]}))
+  (layout/render "[{ent-name}]/index.html" {:[{ent-name}]s (db/get-all-[{ent-name}]s) :cols [[% for col in cols %]"[{col.colname}]" [% endfor %]]}))
 
 (defn create-page []
-  (layout/render "/[{ent-name}]/create.html" {:create_update "Create"}))
+  (layout/render "[{ent-name}]/create.html" {:create_update "Create"}))
 
 (defn update-page [uuid]
   (let [[{ent-name}] (db/get-[{ent-name}]-by-uuid uuid)]
-    (layout/render "/[{ent-name}]/create.html" {:[{ent-name}] [{ent-name}] :create_update "Update"})))
+    (layout/render "[{ent-name}]/create.html" {:[{ent-name}] [{ent-name}] :create_update "Update"})))
 
 (defn delete-page [uuid]
-  (layout/render "/[{ent-name}]/delete.html" {:uuid uuid}))
+  (layout/render "[{ent-name}]/delete.html" {:uuid uuid}))
 
 (defn create [[% for col in cols %][{col.colname}] [% endfor %]]
   (try
