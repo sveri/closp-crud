@@ -47,6 +47,9 @@
   (cond
     (.contains uri "h2") "org.h2.Driver"
     (.contains uri "mysql") "com.mysql.jdbc.Driver"
+    (.contains uri "sqlite") "org.sqlite.JDBC"
+    (.contains uri "postgresql") "org.postgresql.Driver"
+
     :else (throw (IllegalArgumentException. "Either you did not provide a correct jdbc uri, or the protocol is
     not supported yet."))))
 
