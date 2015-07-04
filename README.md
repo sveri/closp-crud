@@ -215,6 +215,10 @@ into the frontend.
 
 ## Changes
 
+### 0.1.2
+
+* Add support for mysql and sqlite
+
 ### 0.1.1
 
 * Don't overwrite existing files, cancel everything in case a file exists already.
