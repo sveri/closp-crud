@@ -17,7 +17,7 @@
 (t/ann merge-required [pt/form-map String pt/et-column -> pt/form-map])
 (defn merge-required [m ent-name col]
   (if (and (< 2 (count col)) (= (nth col 2) :null))
-    (merge m {:required "required" :value (str "{{" ent-name "." (.toUpperCase (name (first col))) "}}")})
+    (merge m {:required "required" :value (str "{{" ent-name "." (name (first col)) "}}")})
     m))
 
 (t/ann ^:no-check dt->hiccup [pt/et-column Keyword -> pt/html-form-group])

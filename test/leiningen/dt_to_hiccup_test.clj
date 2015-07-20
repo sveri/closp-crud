@@ -29,3 +29,5 @@
          (tth/dt->hiccup bool-c "fooname" :create)))
   (is (= [[:label [:input.form-control {:id "male" :name "male" :type "checkbox"}] "male"]]
          (tth/dt->hiccup (assoc bool-c 3 false) "fooname" :create))))
+
+(deftest conv-text)

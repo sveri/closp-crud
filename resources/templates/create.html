@@ -3,7 +3,7 @@
 
 <form action="/[{entityname}]/{{create_update|lower}}" class="form" method="post">
     <input name="__anti-forgery-token" type="hidden" value="{{af-token}}"/>
-    <input name="uuid" type="hidden" value="{{[{entityname}].UUID}}"/>
+    <input name="uuid" type="hidden" value="{{[{entityname}].uuid}}"/>
     [{form-groups|safe}]
     <button class="btn btn-primary" type="submit">{{create_update}} [{entityname}]</button>
 </form>

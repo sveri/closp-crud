@@ -213,7 +213,21 @@ There is a uuid field that is added to every table. There is no need to explicit
 is used as an identifier for communication with the frontend, so the auto generated id is never passed
 into the frontend.
 
+## FAQ
+
+### Using h2 I get an error it cannot find columns or tables
+
+This is due to the fact the h2 sticks to the SQL standards and some others don't.  
+TLDR: add _;DATABASE_TO_UPPER=FALSE_ to your database uris like this: _"jdbc:h2:./db/korma.db;DATABASE_TO_UPPER=FALSE"_  
+
+Long version is the SQL standards and this SO post: 
+<http://stackoverflow.com/questions/10789994/make-h2-treat-quoted-name-and-unquoted-name-as-the-same>
+
 ## Changes
+
+### 0.1.3
+
+* Every db related stuff is lowercase now - add FAQ for h2 _upper_false_  
 
 ### 0.1.2
 

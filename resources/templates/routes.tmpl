@@ -30,7 +30,7 @@
 
 (defn update [uuid [% for col in cols %][{col.colname}] [% endfor %]]
   (try
-    (db/update-[{ent-name}] uuid {[% for col in cols %]:[{col.colname|upper}] [{col.colname-fn}] [% endfor %] })
+    (db/update-[{ent-name}] uuid {[% for col in cols %]:[{col.colname}] [{col.colname-fn}] [% endfor %] })
     (catch Exception e (timb/error e (str "Something went wrong updating: " uuid))
                        (layout/flash-result (str "An error occured.") "alert-danger")))
   (resp/redirect "/[{ent-name}]"))

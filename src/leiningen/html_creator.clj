@@ -64,14 +64,14 @@
 ; index
 (defn create-tds-for-index [dataset]
   (let [e-name (:name dataset)
-        conv-col-name #(.toUpperCase (name (first %)))
+        conv-col-name #(name (first %))
         san-cols (h/filter-id-columns (:columns dataset))
         first-col (first san-cols)
-        hicc-first-col [:td [:a {:href (str "/" e-name "/{{" e-name ".UUID}}")}
+        hicc-first-col [:td [:a {:href (str "/" e-name "/{{" e-name ".uuid}}")}
                              (str "{{" e-name "." (conv-col-name first-col) "}}")]]
         rest-cols (rest san-cols)
         hicc-rest-cols (map (fn [col] [:td (str "{{" e-name "." (conv-col-name col) "}}")]) rest-cols)
-        hicc-delete-col [:td [:a.btn.btn-primary {:href (str "/" e-name "/delete/{{" e-name ".UUID}}")} "Delete"]]]
+        hicc-delete-col [:td [:a.btn.btn-primary {:href (str "/" e-name "/delete/{{" e-name ".uuid}}")} "Delete"]]]
     (str (hicc/html hicc-first-col) "\r\n\t\t\t\t" (hicc/html hicc-rest-cols) "\r\n\t\t\t\t"
          (hicc/html hicc-delete-col))))
 
