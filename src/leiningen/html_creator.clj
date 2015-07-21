@@ -6,7 +6,16 @@
             [leiningen.helper :as h]
             [de.sveri.clojure.commons.files.faf :as faf]
             [selmer.parser :as selm])
-  (:import (clojure.lang Seqable Keyword)))
+  (:import (clojure.lang Seqable Keyword)
+           (java.lang System)))
+
+(def line-sep (System/lineSeparator))
+
+(t/ann insert-line-endings [Seqable -> String])
+(defn- hicc->html [s]
+  (-> s
+      (hicc/html)
+      (clojure.string/replace #"/div>" (str "/div>" line-sep))))
 
 (t/ann get-and-create-templ-fp-path! [String String pt/entity-description -> String])
 (defn- get-and-create-templ-fp-path! [filename templ-path dataset]
@@ -31,9 +40,9 @@
         btns [[:button.btn.btn-primary {:type "submit"} (str "Add " action)]]]
     (vec (concat form af-token form-groups btns))))
 
-(t/ann wrap-with-selmer-extend [String -> String])
-(defn wrap-with-selmer-extend [form]
-  (str "{% extends \"base.html\" %}\r\n{% block content %}\r\n" form "\r\n{% endblock %}"))
+(t/ann wrap-extend [String -> String])
+(defn wrap-extend [form]
+  (str "{% extends \"base.html\" %}" line-sep "{% block content %}" line-sep form line-sep "{% endblock %}"))
 
 ; create
 (t/ann create-html [pt/entity-description -> String])
@@ -41,7 +50,7 @@
   (let [cleaned-dataset (h/filter-dataset dataset)
         form-groups (map #(wrap-with-form-group (ds-conv/dt->hiccup % (:name dataset) :create))
                          (:columns cleaned-dataset))
-        form-groups-str (hicc/html form-groups)]
+        form-groups-str (hicc->html form-groups)]
     (selm/render-file "templates/create.html" {:entityname (:name dataset)
                                                :form-groups form-groups-str}
                       {:tag-open \[ :tag-close \]})))
@@ -72,8 +81,8 @@
         rest-cols (rest san-cols)
         hicc-rest-cols (map (fn [col] [:td (str "{{" e-name "." (conv-col-name col) "}}")]) rest-cols)
         hicc-delete-col [:td [:a.btn.btn-primary {:href (str "/" e-name "/delete/{{" e-name ".uuid}}")} "Delete"]]]
-    (str (hicc/html hicc-first-col) "\r\n\t\t\t\t" (hicc/html hicc-rest-cols) "\r\n\t\t\t\t"
-         (hicc/html hicc-delete-col))))
+    (str (hicc->html hicc-first-col) (str line-sep "\t\t\t\t") (hicc->html hicc-rest-cols) (str line-sep "\t\t\t\t")
+         (hicc->html hicc-delete-col))))
 
 (t/ann index-html [pt/entity-description -> String])
 (defn index-html [dataset]
