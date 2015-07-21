@@ -16,3 +16,7 @@
 (deftest text-html
   (let [html (ht/create-html table1-definition)]
     (is (= true (.contains html "{{table1.description}}")))))
+
+(deftest bool-html
+  (let [html (ht/create-html table1-definition)]
+    (is (= true (.contains html (str "{%if table1.male = 1 %}checked{% endif %}"))))))

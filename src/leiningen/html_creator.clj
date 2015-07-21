@@ -5,17 +5,18 @@
             [leiningen.td-to-hiccup :as ds-conv]
             [leiningen.helper :as h]
             [de.sveri.clojure.commons.files.faf :as faf]
-            [selmer.parser :as selm])
+            [selmer.parser :as selm]
+            [clojure.string :as s])
   (:import (clojure.lang Seqable Keyword)
            (java.lang System)))
 
 (def line-sep (System/lineSeparator))
 
 (t/ann insert-line-endings [Seqable -> String])
-(defn- hicc->html [s]
-  (-> s
+(defn- hicc->html [se]
+  (-> se
       (hicc/html)
-      (clojure.string/replace #"/div>" (str "/div>" line-sep))))
+      (s/replace #"/div>" (str "/div>" line-sep))))
 
 (t/ann get-and-create-templ-fp-path! [String String pt/entity-description -> String])
 (defn- get-and-create-templ-fp-path! [filename templ-path dataset]
@@ -45,14 +46,23 @@
   (str "{% extends \"base.html\" %}" line-sep "{% block content %}" line-sep form line-sep "{% endblock %}"))
 
 ; create
+(defn insert-extra-tags [form-groups-str entity field]
+  (s/replace form-groups-str #"checkbox" "ble"
+             ;(str "type=\"checkbox\" " "{%if " entity "." field " = 1 %}checked{% endif %}")
+             )
+  form-groups-str)
+
 (t/ann create-html [pt/entity-description -> String])
 (defn create-html [dataset]
   (let [cleaned-dataset (h/filter-dataset dataset)
         form-groups (map #(wrap-with-form-group (ds-conv/dt->hiccup % (:name dataset) :create))
                          (:columns cleaned-dataset))
-        form-groups-str (hicc->html form-groups)]
+        form-groups-str (hicc->html form-groups)
+        form-groups-extra (insert-extra-tags form-groups-str "foo" "bar")
+        ]
+    (println form-groups-extra)
     (selm/render-file "templates/create.html" {:entityname (:name dataset)
-                                               :form-groups form-groups-str}
+                                               :form-groups form-groups-extra}
                       {:tag-open \[ :tag-close \]})))
 
 (t/ann store-create-template [pt/entity-description String -> nil])
