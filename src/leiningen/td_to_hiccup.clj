@@ -5,20 +5,25 @@
 
 
 
-(t/ann wrap-with-vec-and-label [pt/et-column pt/html-form -> pt/html-form-group])
-(defmulti wrap-with-vec-and-label (fn [_ hicc-col] (:type (second hicc-col))))
+(t/ann wrap-with-vec-and-label' [pt/et-column pt/html-form -> pt/html-form-group])
+(defmulti wrap-with-vec-and-label' (fn [_ hicc-col] (:type (second hicc-col))))
 
-(defmethod wrap-with-vec-and-label "checkbox" [col hicc-col]
-  [(let [n (name (first col))] [:label hicc-col n])])
+(defmethod wrap-with-vec-and-label' "checkbox" [col hicc-col]
+  [[:label hicc-col (name (first col))]])
 
-(defmethod wrap-with-vec-and-label :default [col hicc-col]
+(defmethod wrap-with-vec-and-label' :default [col hicc-col]
   [(let [n (name (first col))] [:label {:for n} n]) hicc-col])
 
-(t/ann merge-required [pt/form-map String pt/et-column -> pt/form-map])
-(defn merge-required [m ent-name col]
+(t/ann add-required-attr [pt/form-map String pt/et-column -> pt/form-map])
+(defn add-required-attr [m ent-name col]
   (if (and (< 2 (count col)) (= (nth col 2) :null))
     (merge m {:required "required" :value (str "{{" ent-name "." (name (first col)) "}}")})
     m))
+
+(defn- wrap-with-vec-and-label [form-key col ent-name]
+  (wrap-with-vec-and-label' col [form-key (add-required-attr {:id   (name (first col))
+                                                              :name (name (first col))}
+                                                             ent-name col)]))
 
 (t/ann ^:no-check dt->hiccup [pt/et-column Keyword -> pt/html-form-group])
 (defmulti dt->hiccup
@@ -27,24 +32,27 @@
               [(if (vector? s) (first s) s) t])))
 
 (defmethod dt->hiccup [:int :create] [col ent-name _]
-  (wrap-with-vec-and-label col [:input.form-control (merge-required {:id   (name (first col))
-                                                                     :name (name (first col))}
-                                                                    ent-name col)]))
+  (let [field-name (name (first col))]
+    (wrap-with-vec-and-label' col
+                              [:input.form-control
+                               (add-required-attr {:id   field-name
+                                                   :name field-name}
+                                                  ent-name col)])))
 
 (defmethod dt->hiccup [:varchar :create] [col ent-name _]
   {:pre [(second (second col))]}
-  (wrap-with-vec-and-label
+  (wrap-with-vec-and-label'
     col
-    [:input.form-control (merge-required {:id        (name (first col))
-                                          :name      (name (first col))
-                                          :maxlength (nth (nth col 1) 1)}
-                                         ent-name col)]))
+    [:input.form-control (add-required-attr {:id        (name (first col))
+                                             :name      (name (first col))
+                                             :maxlength (nth (nth col 1) 1)}
+                                            ent-name col)]))
 
 (defmethod dt->hiccup [:char :create] [col ent-name _]
   (dt->hiccup (assoc col 1 (assoc (second col) 0 :varchar)) ent-name :create))
 
-(defmethod dt->hiccup [:boolean :create] [col ent-name _]
-  (wrap-with-vec-and-label
+(defmethod dt->hiccup [:boolean :create] [col _ _]
+  (wrap-with-vec-and-label'
     col
     (let [col-m (apply assoc (sorted-map) col)]
       [:input.form-control (merge (when (= true (:default col-m)) {:checked "checked"})
@@ -53,16 +61,14 @@
                                    :type "checkbox"})])))
 
 (defmethod dt->hiccup [:int :index] [col ent-name _]
-  (wrap-with-vec-and-label col [:input.form-control (merge-required {:id   (name (first col))
-                                                                     :name (name (first col))}
-                                                                    ent-name col)]))
+  (wrap-with-vec-and-label :input.form-control col ent-name))
 
 (defmethod dt->hiccup [:text :create] [col ent-name _]
-  (wrap-with-vec-and-label col [:textarea.form-control (merge-required {:id   (name (first col))
-                                                                        :name (name (first col))}
-                                                                       ent-name col)]))
+  (let [field-name (name (first col))]
+    (wrap-with-vec-and-label' col [:textarea.form-control (add-required-attr {:id   field-name
+                                                                              :name field-name}
+                                                                             ent-name col)
+                                   (str "{{" ent-name "." field-name "}}")])))
 
 (defmethod dt->hiccup :default [col ent-name _]
-  (wrap-with-vec-and-label col [:input.form-control (merge-required {:id   (name (first col))
-                                                                     :name (name (first col))}
-                                                                    ent-name col)]))
+  (wrap-with-vec-and-label :input.form-control col ent-name))

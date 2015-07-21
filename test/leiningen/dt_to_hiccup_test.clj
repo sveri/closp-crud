@@ -10,18 +10,18 @@
 
 (deftest conv-int
   (is (= [[:label {:for "id"} "id"] [:input.form-control {:id "id" :required "required" :name "id"
-                                                          :value "{{fooname.ID}}"}]]
+                                                          :value "{{fooname.id}}"}]]
          (tth/dt->hiccup int-c "fooname" :create))))
 
 (deftest conv-varchar
   (is (= [[:label {:for "name"} "name"]
-          [:input.form-control {:id "name" :required "required" :maxlength 40 :name "name" :value "{{fooname.NAME}}"}]]
+          [:input.form-control {:id "name" :required "required" :maxlength 40 :name "name" :value "{{fooname.name}}"}]]
          (tth/dt->hiccup varchar-c "fooname" :create)))
   (is (thrown? AssertionError (tth/dt->hiccup varchar-invalid-c "fooname" :create))))
 
 (deftest conv-char
   (is (= [[:label {:for "name"} "name"]
-          [:input.form-control {:id "name" :required "required" :maxlength 40 :name "name" :value "{{fooname.NAME}}"}]]
+          [:input.form-control {:id "name" :required "required" :maxlength 40 :name "name" :value "{{fooname.name}}"}]]
          (tth/dt->hiccup char-c "fooname" :create))))
 
 (deftest conv-boolean
@@ -30,4 +30,4 @@
   (is (= [[:label [:input.form-control {:id "male" :name "male" :type "checkbox"}] "male"]]
          (tth/dt->hiccup (assoc bool-c 3 false) "fooname" :create))))
 
-(deftest conv-text)
+;(deftest conv-text)

@@ -11,9 +11,8 @@
 (deftest create-html
   (let [html (ht/create-html table1-definition)]
     (is (= true (.contains html "table1/{{crea")))
-    (is (= true (.contains html "value=\"{{table1.FOONAME")))))
+    (is (= true (.contains html "value=\"{{table1.fooname")))))
 
 (deftest text-html
   (let [html (ht/create-html table1-definition)]
-    (println "desc: " html)
-    (is (= true (.contains html "description")))))
+    (is (= true (.contains html "{{table1.description}}")))))
