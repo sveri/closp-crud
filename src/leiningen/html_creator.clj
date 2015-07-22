@@ -46,24 +46,27 @@
   (str "{% extends \"base.html\" %}" line-sep "{% block content %}" line-sep form line-sep "{% endblock %}"))
 
 ; create
-(defn insert-extra-tags [form-groups-str entity field]
-  (s/replace form-groups-str #"type=\"checkbox\""
-             (str "type=\"checkbox\" " "{%if " entity "." field " = 1 %}checked{% endif %}"))
-  )
+(defn insert-extra-tags [form-groups-str entity-name]
+  (if (.contains form-groups-str "checkbox")
+    (let [field (second (re-find #"id=\"([a-zA-Z]*)\"" form-groups-str))]
+     (s/replace form-groups-str #"type=\"checkbox\""
+                (str "type=\"checkbox\" " "{%if " entity-name "." field " = 1 %}checked{% endif %}")))
+    form-groups-str))
 
 (def t "<input class=\"form-control\" id=\"male\" name=\"male\" type=\"checkbox\" />")
 
 (t/ann create-html [pt/entity-description -> String])
 (defn create-html [dataset]
   (let [cleaned-dataset (h/filter-dataset dataset)
-        form-groups (map #(wrap-with-form-group (ds-conv/dt->hiccup % (:name dataset) :create))
-                         (:columns cleaned-dataset))
-        form-groups-str (hicc->html form-groups)
-        form-groups-extra (insert-extra-tags form-groups-str "foo" "bar")
-        ]
-    (println form-groups-extra)
-    (selm/render-file "templates/create.html" {:entityname (:name dataset)
-                                               :form-groups form-groups-extra}
+        entity-name (:name dataset)
+        form-groups (map
+                      #(-> (ds-conv/dt->hiccup % entity-name :create)
+                           (wrap-with-form-group)
+                           hicc->html
+                           (insert-extra-tags entity-name))
+                      (:columns cleaned-dataset))]
+    (selm/render-file "templates/create.html" {:entityname  entity-name
+                                               :form-groups (s/join line-sep form-groups)}
                       {:tag-open \[ :tag-close \]})))
 
 (t/ann store-create-template [pt/entity-description String -> nil])

@@ -228,6 +228,7 @@ Long version is the SQL standards and this SO post:
 ### 0.1.3
 
 * Every db related stuff is lowercase now - add FAQ for h2 _upper_false_  
+* Fix #3 Correctly generate selmer template for boolean fields
 
 ### 0.1.2
 
