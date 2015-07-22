@@ -47,10 +47,11 @@
 
 ; create
 (defn insert-extra-tags [form-groups-str entity field]
-  (s/replace form-groups-str #"checkbox" "ble"
-             ;(str "type=\"checkbox\" " "{%if " entity "." field " = 1 %}checked{% endif %}")
-             )
-  form-groups-str)
+  (s/replace form-groups-str #"type=\"checkbox\""
+             (str "type=\"checkbox\" " "{%if " entity "." field " = 1 %}checked{% endif %}"))
+  )
+
+(def t "<input class=\"form-control\" id=\"male\" name=\"male\" type=\"checkbox\" />")
 
 (t/ann create-html [pt/entity-description -> String])
 (defn create-html [dataset]
