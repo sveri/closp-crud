@@ -1,5 +1,7 @@
 # closp-crud
 
+![Build Status](http://sveri.de:8082/buildStatus/icon?job=closp-crud)
+
 A Leiningen plugin to provide CRUD functionality for clojure web projects. Optimized for the usage
 within <https://github.com/sveri/closp>.
 
