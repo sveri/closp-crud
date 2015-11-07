@@ -227,6 +227,10 @@ Long version is the SQL standards and this SO post:
 
 ## Changes
 
+### 0.1.4
+
+* Fix a bug where column names with underscores broke boolean html field generation
+
 ### 0.1.3
 
 * Every db related stuff is lowercase now - add FAQ for h2 _upper_false_  

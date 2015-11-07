@@ -48,7 +48,7 @@
 ; create
 (defn insert-extra-tags [form-groups-str entity-name]
   (if (.contains form-groups-str "checkbox")
-    (let [field (second (re-find #"id=\"([a-zA-Z]*)\"" form-groups-str))]
+    (let [field (second (re-find #"id=\"([a-zA-Z-_]*)\"" form-groups-str))]
      (s/replace form-groups-str #"type=\"checkbox\""
                 (str "type=\"checkbox\" " "{%if " entity-name "." field " = 1 %}checked{% endif %}")))
     form-groups-str))

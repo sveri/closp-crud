@@ -7,6 +7,7 @@
 (def varchar-invalid-c [:name [:varchar] :null false :pk true])
 (def char-c [:name [:char 40] :null false :pk true])
 (def bool-c [:male :boolean :default true])
+(def underscore-col-name [:male_human :boolean :default true])
 
 (deftest conv-int
   (is (= [[:label {:for "id"} "id"] [:input.form-control {:id "id" :required "required" :name "id"
@@ -30,4 +31,6 @@
   (is (= [[:label [:input.form-control {:id "male" :name "male" :type "checkbox"}] "male"]]
          (tth/dt->hiccup (assoc bool-c 3 false) "fooname" :create))))
 
-;(deftest conv-text)
+(deftest conv-boolean
+  (is (= [[:label [:input.form-control {:id "male_human" :checked "checked" :name "male_human" :type "checkbox"}] "male_human"]]
+         (tth/dt->hiccup underscore-col-name "fooname" :create))))
