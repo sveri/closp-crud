@@ -13,8 +13,6 @@
                  [selmer "0.8.2"]
                  [hiccup "1.0.5"]
 
-                 [org.clojars.jmeeks/jtidy "r938"]
-
                  ;; Microsoft SQL Server using the jTDS driver
                  [net.sourceforge.jtds/jtds "1.2.4"]
                  ;; MySQL

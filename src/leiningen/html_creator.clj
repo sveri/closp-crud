@@ -6,8 +6,7 @@
             [leiningen.helper :as h]
             [de.sveri.clojure.commons.files.faf :as faf]
             [selmer.parser :as selm]
-            [clojure.string :as s]
-            [leiningen.prettyprint :as pp])
+            [clojure.string :as s])
   (:import (clojure.lang Seqable Keyword)
            (java.lang System)))
 
@@ -66,9 +65,9 @@
                            hicc->html
                            (insert-extra-tags entity-name))
                       (:columns cleaned-dataset))]
-    (pp/pretty-print-html (selm/render-file "templates/create.html" {:entityname  entity-name
-                                                :form-groups (s/join line-sep form-groups)}
-                       {:tag-open \[ :tag-close \]}))))
+    (selm/render-file "templates/create.html" {:entityname  entity-name
+                                               :form-groups (s/join line-sep form-groups)}
+                      {:tag-open \[ :tag-close \]})))
 
 (t/ann store-create-template [pt/entity-description String -> nil])
 (defn store-create-template [dataset templ-path]
