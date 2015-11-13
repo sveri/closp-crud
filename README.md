@@ -230,6 +230,7 @@ Long version is the SQL standards and this SO post:
 ### 0.1.4
 
 * Fix a bug where column names with underscores broke boolean html field generation
+* Fix generation of clojure file names to contain underscores instead of dashes
 
 ### 0.1.3
 
