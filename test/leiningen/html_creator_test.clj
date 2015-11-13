@@ -26,5 +26,4 @@
 
 (deftest underscore-in-col-name
   (let [html (ht/create-html underscore-def)]
-    (println html)
     (is (= true (.contains html (str "{%if table2.some_thing = 1 %}checked{% endif %}"))))))

@@ -9,12 +9,12 @@
             [leiningen.routes-generator :as rg])
   (:import (java.io File)))
 
-(defn files-exist? [dataset ns-db ns-routes templ-path src-path]
-  (let [ent-name (:name dataset)
-        db-fn (h/get-ns-file-path ns-db (str ent-name ".clj") src-path)
-        routes-fn (h/get-ns-file-path ns-routes (str ent-name ".clj") src-path)
+(defn files-exist? [entity-name ns-db ns-routes templ-path src-path]
+  (let [entity-name-sanitized (h/sanitize-filename entity-name)
+        db-fn (h/get-ns-file-path ns-db (str entity-name-sanitized ".clj") src-path)
+        routes-fn (h/get-ns-file-path ns-routes (str entity-name-sanitized ".clj") src-path)
         templ-filenames ["create.html" "index.html" "delete.html"]
-        tmpl-path (str templ-path "/" ent-name)
+        tmpl-path (str templ-path "/" entity-name)
         all-fps (concat [db-fn routes-fn] (map #(str tmpl-path "/" %) templ-filenames))]
     (some #{true} (map #(.exists (File. %)) all-fps))))
 
@@ -22,7 +22,7 @@
 ;(t/ann closp-crud [(t/HMap :mandatory {:closp-crud t/Any}) -> nil])
 (defn closp-crud
   [project & args]
-  (let [{:keys [options arguments errors summary]} (t-cli/parse-opts args opt-helper/cli-options)
+  (let [{:keys [options]} (t-cli/parse-opts args opt-helper/cli-options)
         file-in-path (:filepath options)
         jdbc-uri (get-in project [:closp-crud :jdbc-url])
         migr-out-path (get-in project [:closp-crud :migrations-output-path])
@@ -33,7 +33,7 @@
         templ-path (.getAbsolutePath (File. "./" (get-in project [:closp-crud :templates])))
         src-path (.getAbsolutePath (File. "./" clj-src))
         dataset (ent/load-entity-from-path file-in-path)]
-    (if (files-exist? dataset ns-db ns-routes templ-path src-path)
+    (if (files-exist? (:name dataset) ns-db ns-routes templ-path src-path)
       (println "Some file exists already. Cancelling.")
       (do (dcg/store-dataset ns-db dataset src-path)
           (ent/generate-sql-statements (ent/load-entity-from-path file-in-path) jdbc-uri migr-out-path)

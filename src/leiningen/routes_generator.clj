@@ -29,5 +29,5 @@
                        :ent-name          (:name dataset)
                        :add-fns           (create-add-fns (:columns dataset))}
                       {:tag-open \[ :tag-close \]})
-    (h/store-content-in-ns ns-routes (str (:name dataset) ".clj") src-path)
+    (h/store-content-in-ns ns-routes (str (h/sanitize-filename (:name dataset)) ".clj") src-path)
     (println "Generated routes namespace.")))

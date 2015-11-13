@@ -28,6 +28,6 @@
 (ann store-dataset [String pt/entity-description String -> nil])
 (defn store-dataset [ns dataset src-path]
   (let [file-content (render-db-file ns dataset)
-        filename (str (:name dataset) ".clj")]
+        filename (str (h/sanitize-filename (:name dataset)) ".clj")]
     (h/store-content-in-ns ns filename src-path file-content)
     (println "Generated database namespace.")))

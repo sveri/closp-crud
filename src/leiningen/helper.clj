@@ -9,6 +9,9 @@
             [de.sveri.clojure.commons.files.faf :as faf]))
 
 
+(defn sanitize-filename [filename]
+  (clojure.string/replace filename #"-" "_"))
+
 (t/ann filter-id-columns [pt/et-columns -> (t/AVec pt/et-column)])
 (defn filter-id-columns [cols]
   (vec (remove (t/fn [col :- pt/et-column] (= :id (first col))) cols)))
