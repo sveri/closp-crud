@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "templates/base.html" %}
 {% block content %}
 
 <form action="/[{entityname}]/{{create_update|lower}}" class="form" method="post">
     <input name="__anti-forgery-token" type="hidden" value="{{af-token}}"/>
-    <input name="uuid" type="hidden" value="{{[{entityname}].uuid}}"/>
+    <input name="id" type="hidden" value="{{[{entityname}].id}}"/>
     [{form-groups|safe}]
     <button class="btn btn-primary" type="submit">{{create_update}} [{entityname}]</button>
 </form>
