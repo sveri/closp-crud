@@ -14,12 +14,12 @@
 (defn create-page []
   (layout/render "[{ent-name}]/create.html" {:create_update "Create"}))
 
-(defn update-page [uuid]
-  (let [[{ent-name}] (db/get-[{ent-name}]-by-uuid uuid)]
+(defn update-page [id]
+  (let [[{ent-name}] (db/get-[{ent-name}]-by-id id)]
     (layout/render "[{ent-name}]/create.html" {:[{ent-name}] [{ent-name}] :create_update "Update"})))
 
-(defn delete-page [uuid]
-  (layout/render "[{ent-name}]/delete.html" {:uuid uuid}))
+(defn delete-page [id]
+  (layout/render "[{ent-name}]/delete.html" {:id id}))
 
 (defn create [[% for col in cols %][{col.colname}] [% endfor %]]
   (try
@@ -28,18 +28,18 @@
                        (layout/flash-result (str "An error occured.") "alert-danger")))
   (resp/redirect "/[{ent-name}]"))
 
-(defn update [uuid [% for col in cols %][{col.colname}] [% endfor %]]
+(defn update [id [% for col in cols %][{col.colname}] [% endfor %]]
   (try
-    (db/update-[{ent-name}] uuid {[% for col in cols %]:[{col.colname}] [{col.colname-fn}] [% endfor %] })
-    (catch Exception e (timb/error e (str "Something went wrong updating: " uuid))
+    (db/update-[{ent-name}] id {[% for col in cols %]:[{col.colname}] [{col.colname-fn}] [% endfor %] })
+    (catch Exception e (timb/error e (str "Something went wrong updating: " id))
                        (layout/flash-result (str "An error occured.") "alert-danger")))
   (resp/redirect "/[{ent-name}]"))
 
-(defn delete [uuid delete_cancel]
+(defn delete [id delete_cancel]
   (when (= "Delete" delete_cancel)
     (try
-     (db/delete-[{ent-name}] uuid)
-     (catch Exception e (timb/error e (str "Something went wrong deleting: " uuid))
+     (db/delete-[{ent-name}] id)
+     (catch Exception e (timb/error e (str "Something went wrong deleting: " id))
                         (layout/flash-result (str "An error occured.") "alert-danger"))))
   (resp/redirect "/[{ent-name}]"))
 
@@ -47,8 +47,8 @@
   (routes
     (GET "/[{ent-name}]" [] (index-page))
     (GET "/[{ent-name}]/create" [] (create-page))
-    (GET "/[{ent-name}]/:uuid" [uuid] (update-page uuid))
+    (GET "/[{ent-name}]/:id" [id] (update-page id))
     (POST "/[{ent-name}]/create" [[% for col in cols %][{col.colname}] [% endfor %]] (create [% for col in cols %][{col.colname}] [% endfor %]))
-    (GET "/[{ent-name}]/delete/:uuid" [uuid] (delete-page uuid))
-    (POST "/[{ent-name}]/delete" [uuid delete_cancel] (delete uuid delete_cancel))
-    (POST "/[{ent-name}]/update" [uuid [% for col in cols %][{col.colname}] [% endfor %]] (update uuid [% for col in cols %][{col.colname}] [% endfor %]))))
+    (GET "/[{ent-name}]/delete/:id" [id] (delete-page id))
+    (POST "/[{ent-name}]/delete" [id delete_cancel] (delete id delete_cancel))
+    (POST "/[{ent-name}]/update" [id [% for col in cols %][{col.colname}] [% endfor %]] (update id [% for col in cols %][{col.colname}] [% endfor %]))))

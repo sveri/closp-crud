@@ -6,7 +6,8 @@
             [clojure.core.typed :as t]
             [leiningen.html-creator :as hc]
             [leiningen.helper :as h]
-            [leiningen.routes-generator :as rg])
+            [leiningen.routes-generator :as rg]
+            [de.sveri.clojure.commons.files.edn :as f-edn])
   (:import (java.io File)))
 
 (defn files-exist? [entity-name ns-db ns-routes templ-path src-path]
@@ -21,22 +22,23 @@
 ; TODO proper error handling
 ;(t/ann closp-crud [(t/HMap :mandatory {:closp-crud t/Any}) -> nil])
 (defn closp-crud
-  [project & args]
+  [& args]
   (let [{:keys [options]} (t-cli/parse-opts args opt-helper/cli-options)
+        config (f-edn/from-edn "closp-crud.edn")
         file-in-path (:filepath options)
-        jdbc-uri (get-in project [:closp-crud :jdbc-url])
-        migr-out-path (get-in project [:closp-crud :migrations-output-path])
-        ns-db (get-in project [:closp-crud :ns-db])
-        ns-routes (get-in project [:closp-crud :ns-routes])
-        ns-layout (get-in project [:closp-crud :ns-layout])
-        clj-src (get-in project [:closp-crud :clj-src])
-        templ-path (.getAbsolutePath (File. "./" (get-in project [:closp-crud :templates])))
+        jdbc-uri (:jdbc-url config)
+        migr-out-path (:migrations-output-path config)
+        ns-db (:ns-db config)
+        ns-routes (:ns-routes config)
+        ns-layout (:ns-layout config)
+        clj-src (:clj-src config)
+        templ-path (.getAbsolutePath (File. "./" (:templates config)))
         src-path (.getAbsolutePath (File. "./" clj-src))
         dataset (ent/load-entity-from-path file-in-path)]
     (if (files-exist? (:name dataset) ns-db ns-routes templ-path src-path)
       (println "Some file exists already. Cancelling.")
       (do (dcg/store-dataset ns-db dataset src-path)
-          (ent/generate-sql-statements (ent/load-entity-from-path file-in-path) jdbc-uri migr-out-path)
+          (ent/write-sql-statements (ent/load-entity-from-path file-in-path) jdbc-uri migr-out-path)
           (hc/store-html-files dataset templ-path)
           (rg/store-route ns-routes ns-db ns-layout dataset src-path)
           (println "Done.")))))

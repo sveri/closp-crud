@@ -62,5 +62,5 @@
   (let [time-str (time-fmt/unparse (time-fmt/formatters :basic-date-time-no-ms) (time-core/now))
         out-up-fp (io/file (str out-path "/" ent-name "-" time-str ".up.sql"))
         out-down-fp (io/file (str out-path "/" ent-name "-" time-str ".down.sql"))]
-    (spit out-up-fp (first sql-up))
+    (spit out-up-fp sql-up)
     (spit out-down-fp sql-down)))

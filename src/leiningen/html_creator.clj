@@ -26,7 +26,7 @@
     fp))
 
 (t/ann wrap-with-form-group [pt/html-form-group -> (t/HVec [Keyword pt/html-form-group])])
-(defmulti wrap-with-form-group (fn [col-vec] (:type (second (second col-vec)))) )
+(defmulti wrap-with-form-group (fn [col-vec] (:type (second (second col-vec)))))
 
 (defmethod wrap-with-form-group "checkbox" [col-vec]
   (vec (concat [:div] col-vec)))
@@ -90,11 +90,11 @@
         conv-col-name #(name (first %))
         san-cols (h/filter-id-columns (:columns dataset))
         first-col (first san-cols)
-        hicc-first-col [:td [:a {:href (str "/" e-name "/{{" e-name ".uuid}}")}
+        hicc-first-col [:td [:a {:href (str "/" e-name "/{{" e-name ".id}}")}
                              (str "{{" e-name "." (conv-col-name first-col) "}}")]]
         rest-cols (rest san-cols)
         hicc-rest-cols (map (fn [col] [:td (str "{{" e-name "." (conv-col-name col) "}}")]) rest-cols)
-        hicc-delete-col [:td [:a.btn.btn-primary {:href (str "/" e-name "/delete/{{" e-name ".uuid}}")} "Delete"]]]
+        hicc-delete-col [:td [:a.btn.btn-primary {:href (str "/" e-name "/delete/{{" e-name ".id}}")} "Delete"]]]
     (str (hicc->html hicc-first-col) (str line-sep "\t\t\t\t") (hicc->html hicc-rest-cols) (str line-sep "\t\t\t\t")
          (hicc->html hicc-delete-col))))
 

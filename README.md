@@ -209,12 +209,6 @@ autoincrement
 
 For a complete reference of supported tags please look at: <http://www.liquibase.org/documentation/column.html>
 
-### UUID
-
-There is a uuid field that is added to every table. There is no need to explicitely define it. This uuid
-is used as an identifier for communication with the frontend, so the auto generated id is never passed
-into the frontend.
-
 ## FAQ
 
 ### Using h2 I get an error it cannot find columns or tables

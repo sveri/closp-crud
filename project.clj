@@ -1,4 +1,4 @@
-(defproject de.sveri/closp-crud "0.1.4"
+(defproject de.sveri/closp-crud "0.1.5"
   :description "CRUD plugin for closp"
   :url "https://github.com/sveri/closp-crud"
   :license {:name "Eclipse Public License"
@@ -12,6 +12,7 @@
                  [clj-time "0.9.0"]
                  [selmer "0.8.2"]
                  [hiccup "1.0.5"]
+                 [prismatic/schema "1.0.5"]
 
                  ;; Microsoft SQL Server using the jTDS driver
                  [net.sourceforge.jtds/jtds "1.2.4"]
