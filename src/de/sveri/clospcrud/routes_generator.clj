@@ -1,9 +1,9 @@
-(ns leiningen.routes-generator
+(ns de.sveri.clospcrud.routes-generator
   (:require [selmer.parser :as selm]
             [clojure.core.typed :as t :refer [ann]]
-            [leiningen.pre-types :as pt]
+            [de.sveri.clospcrud.pre-types :as pt]
             [clojure.pprint :as pp]
-            [leiningen.helper :as h])
+            [de.sveri.clospcrud.helper :as h])
   (:import (clojure.lang Keyword)))
 
 (def bool-conv-fn '(defn convert-boolean [b] (if (= "on" b) true false)))

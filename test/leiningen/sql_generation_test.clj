@@ -1,6 +1,6 @@
 (ns leiningen.sql-generation-test
   (:require [clojure.test :refer :all]
-            [leiningen.liquibase :as liq]))
+            [de.sveri.clospcrud.liquibase :as liq]))
 
 (defn create-h2-connection []
   (liq/get-db-connection :h2 {:target :memory :database :default}))

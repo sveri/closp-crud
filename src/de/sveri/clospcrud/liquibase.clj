@@ -1,11 +1,11 @@
-(ns leiningen.liquibase
+(ns de.sveri.clospcrud.liquibase
   (:require [clj-jdbcutil.core :as spec]
             [clj-liquibase.core :as lb]
             [clj-dbcp.core :as dbcp]
             [clj-miscutil.core :as mu]
             [clj-liquibase.change :as ch]
             [clojure.core.typed :as t]
-            [leiningen.pre-types :as pt])
+            [de.sveri.clospcrud.pre-types :as pt])
   (:import (liquibase.sql Sql)
            (liquibase.statement SqlStatement)
            (liquibase.sqlgenerator SqlGeneratorFactory)

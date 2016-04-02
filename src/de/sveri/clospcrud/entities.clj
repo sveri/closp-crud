@@ -1,9 +1,9 @@
-(ns leiningen.entities
-  (:require [leiningen.liquibase :as liq]
+(ns de.sveri.clospcrud.entities
+  (:require [de.sveri.clospcrud.liquibase :as liq]
             [de.sveri.clojure.commons.files.edn :as comm-edn]
-            [leiningen.helper :as h]
+            [de.sveri.clospcrud.helper :as h]
             [schema.core :as s]
-            [leiningen.schema :as schem]))
+            [de.sveri.clospcrud.schema :as schem]))
 
 (s/defn load-entity-from-path :- s/Any [fp :- s/Str]
   (comm-edn/filepath->edn fp))

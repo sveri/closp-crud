@@ -1,4 +1,4 @@
-(ns leiningen.pre-types
+(ns de.sveri.clospcrud.pre-types
   (:refer-clojure :exclude [fn])
   (:require [clojure.core.typed :as t :refer [defalias HMap HSeq fn Any HVec U]])
   (:import (clojure.lang Keyword)))

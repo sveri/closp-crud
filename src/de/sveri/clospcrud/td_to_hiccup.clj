@@ -1,6 +1,6 @@
-(ns leiningen.td-to-hiccup
+(ns de.sveri.clospcrud.td-to-hiccup
   (:require [clojure.core.typed :refer [defalias] :as t]
-            [leiningen.pre-types :as pt])
+            [de.sveri.clospcrud.pre-types :as pt])
   (:import (clojure.lang Keyword)))
 
 

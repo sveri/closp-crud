@@ -1,9 +1,9 @@
-(ns leiningen.html-creator
+(ns de.sveri.clospcrud.html-creator
   (:require [hiccup.core :as hicc]
             [clojure.core.typed :as t]
-            [leiningen.pre-types :as pt]
-            [leiningen.td-to-hiccup :as ds-conv]
-            [leiningen.helper :as h]
+            [de.sveri.clospcrud.pre-types :as pt]
+            [de.sveri.clospcrud.td-to-hiccup :as ds-conv]
+            [de.sveri.clospcrud.helper :as h]
             [de.sveri.clojure.commons.files.faf :as faf]
             [selmer.parser :as selm]
             [clojure.string :as s])

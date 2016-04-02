@@ -1,6 +1,6 @@
 (ns leiningen.html-creator-test
   (:require [clojure.test :refer :all]
-            [leiningen.html-creator :as ht]))
+            [de.sveri.clospcrud.html-creator :as ht]))
 
 (def table1-definition {:name    "table1"
                         :columns [[:id :int :null false :pk true :autoinc true]

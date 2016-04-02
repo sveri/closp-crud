@@ -1,4 +1,4 @@
-(ns leiningen.schema
+(ns de.sveri.clospcrud.schema
   (:require [schema.core :as s :refer [Str]]))
 
 

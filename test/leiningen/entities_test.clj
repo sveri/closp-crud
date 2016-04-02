@@ -1,6 +1,6 @@
 (ns leiningen.entities-test
   (:require [clojure.test :refer :all]
-            [leiningen.entities :as ent]
+            [de.sveri.clospcrud.entities :as ent]
             [schema.core :as s]))
 
 (s/set-fn-validation! true)

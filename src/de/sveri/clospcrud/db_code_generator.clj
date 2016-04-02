@@ -1,10 +1,10 @@
-(ns leiningen.db-code-generator
+(ns de.sveri.clospcrud.db-code-generator
   (:require [selmer.parser :as selm]
             [clojure.core.typed :as t :refer [ann]]
-            [leiningen.pre-types :as pt]
+            [de.sveri.clospcrud.pre-types :as pt]
             [clojure.string :as s]
             [de.sveri.clojure.commons.files.faf :as faf]
-            [leiningen.helper :as h])
+            [de.sveri.clospcrud.helper :as h])
   (:import (clojure.lang Seqable)))
 
 

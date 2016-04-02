@@ -1,6 +1,6 @@
 (ns leiningen.code-generator-test
   (:require [clojure.test :refer :all]
-            [leiningen.db-code-generator :refer :all]))
+            [de.sveri.clospcrud.db-code-generator :refer :all]))
 
 (def db-ns "foo.bar")
 

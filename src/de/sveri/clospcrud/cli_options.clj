@@ -1,4 +1,4 @@
-(ns leiningen.cli-options
+(ns de.sveri.clospcrud.cli-options
   (:require
     [clojure.string :as string]))
 

@@ -1,10 +1,10 @@
-(ns leiningen.helper
+(ns de.sveri.clospcrud.helper
   (:require [clj-time.format :as time-fmt]
             [clj-time.core :as time-core]
             [clojure.java.io :as io]
             [de.sveri.clojure.commons.files.faf :as comm-faf]
             [clojure.core.typed :as t]
-            [leiningen.pre-types :as pt]
+            [de.sveri.clospcrud.pre-types :as pt]
             [clojure.string :as s]
             [de.sveri.clojure.commons.files.faf :as faf]))
 

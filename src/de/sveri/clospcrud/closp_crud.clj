@@ -1,12 +1,12 @@
-(ns leiningen.closp-crud
-  (:require [leiningen.cli-options :as opt-helper]
+(ns de.sveri.clospcrud.closp-crud
+  (:require [de.sveri.clospcrud.cli-options :as opt-helper]
             [clojure.tools.cli :as t-cli]
-            [leiningen.entities :as ent]
-            [leiningen.db-code-generator :as dcg]
+            [de.sveri.clospcrud.entities :as ent]
+            [de.sveri.clospcrud.db-code-generator :as dcg]
             [clojure.core.typed :as t]
-            [leiningen.html-creator :as hc]
-            [leiningen.helper :as h]
-            [leiningen.routes-generator :as rg]
+            [de.sveri.clospcrud.html-creator :as hc]
+            [de.sveri.clospcrud.helper :as h]
+            [de.sveri.clospcrud.routes-generator :as rg]
             [de.sveri.clojure.commons.files.edn :as f-edn])
   (:import (java.io File)))
 
