@@ -79,7 +79,7 @@ Next you need a table definition in a file somewhere. It may look like this:
                
 Then run
 
-    $ lein closp-crud -f closp-definitions/person.edn
+    $ lein run -m de.sveri.clospcrud.closp-crud/closp-crud -f closp-definitions/person.edn
     
 This will generate several files:
 
