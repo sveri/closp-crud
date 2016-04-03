@@ -219,28 +219,6 @@ TLDR: add _;DATABASE_TO_UPPER=FALSE_ to your database uris like this: _"jdbc:h2:
 Long version is the SQL standards and this SO post: 
 <http://stackoverflow.com/questions/10789994/make-h2-treat-quoted-name-and-unquoted-name-as-the-same>
 
-## Changes
-
-### 0.1.4
-
-* Fix a bug where column names with underscores broke boolean html field generation
-* Fix generation of clojure file names to contain underscores instead of dashes
-
-### 0.1.3
-
-* Every db related stuff is lowercase now - add FAQ for h2 _upper_false_  
-* Fix #3 Correctly generate selmer template for boolean fields
-
-### 0.1.2
-
-* Add support for mysql and sqlite
-
-### 0.1.1
-
-* Don't overwrite existing files, cancel everything in case a file exists already.
-* Fix default handler for  hiccup generation
-* Add handler for text fields
-
 ## License
 
 Copyright © 2015 Sven Richter
