@@ -1,31 +1,28 @@
 (ns de.sveri.clospcrud.routes-generator
   (:require [selmer.parser :as selm]
-            [clojure.core.typed :as t :refer [ann]]
-            [de.sveri.clospcrud.pre-types :as pt]
             [clojure.pprint :as pp]
-            [de.sveri.clospcrud.helper :as h])
-  (:import (clojure.lang Keyword)))
+            [de.sveri.clospcrud.helper :as h]
+            [de.sveri.clospcrud.schema :as schem]
+            [schema.core :as s]))
 
 (def bool-conv-fn '(defn convert-boolean [b] (if (= "on" b) true false)))
 
-(t/ann contains-boolean? [pt/et-column -> (t/Option Keyword)])
-(defn contains-boolean? [col]
+(s/defn contains-boolean? :- (s/maybe s/Keyword) [col :- schem/et-column]
   (some #{:boolean} col))
 
-(t/ann create-add-fns [pt/et-columns -> String])
-(defn create-add-fns [cols]
+(s/defn create-add-fns :- s/Str [cols :- schem/et-columns]
   (when (< 0 (count (filter contains-boolean? cols)))
     (pp/with-pprint-dispatch pp/code-dispatch bool-conv-fn)))
 
-(t/ann store-route [String String String pt/entity-description -> nil])
-(defn store-route [ns-routes ns-db ns-layout dataset src-path]
+(s/defn store-route :- nil
+  [ns-routes :- s/Str ns-db :- s/Str ns-layout :- s/Str dataset :- schem/entity-description src-path :- s/Str]
   (->>
     (selm/render-file "templates/routes.tmpl"
                       {:ns                (str ns-routes "." (:name dataset))
                        :ns-db             (str ns-db "." (:name dataset))
                        :ns-layout         ns-layout
                        :cols              (h/ds-columns->template-columns (:columns dataset))
-                       :functionized-cols (h/ds-columns->template-columns (:columns dataset) true)
+                       :functionized-cols (h/ds-columns->template-columns (:columns dataset))
                        :ent-name          (:name dataset)
                        :add-fns           (create-add-fns (:columns dataset))}
                       {:tag-open \[ :tag-close \]})

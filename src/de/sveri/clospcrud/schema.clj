@@ -39,10 +39,46 @@
 
 (def et-column [(s/one s/Keyword "name")
                 (s/one (s/cond-pre s/Keyword [(s/one s/Keyword "texttype") (s/one s/Num "size")]) "type")
-                (s/one s/Keyword "attr1-type")
-                (s/one s/Any "attr1-value")
+                (s/optional s/Keyword "attr1-type")
+                (s/optional s/Any "attr1-value")
                 s/Any])
 
 (def et-columns [et-column])
 
 (def entity-description {:name Str :columns et-columns})
+
+
+;(defalias html-label (t/HVec [Keyword (t/HMap :mandatory {:for String}) String]))
+;(defalias form-map (t/HMap :mandatory {:id String}
+;                           :optional {:required String}
+;                           :complete? false))
+;(defalias html-form (t/HVec [Keyword form-map t/Any *]))
+;(defalias html-form-group (t/HVec [html-label html-form]))
+
+
+;(def html-label [(s/one s/Keyword "label-keyword") (s/one {:for Str}) Str])
+;(def form-map {:id Str (s/optional-key :required) s/Str :name s/Str :type s/Str})
+;
+;(def html-form [(s/one s/Keyword "input-type") (s/one form-map "input-attributes") s/Any])
+;(def html-form-group [(s/one html-label "label") (s/one html-form "form")])
+
+
+;(def html-label [(s/one s/Keyword "label-keyword")])
+;(def html-label [(s/cond-pre s/Keyword
+;                             [(s/one s/Keyword "label")
+;                              (s/one {:for s/Str} "for")
+;                              (s/one Str "name")])])
+(def html-label (s/cond-pre s/Keyword
+                            [(s/one s/Keyword "label")
+                             (s/one {:for s/Str} "for")
+                             (s/one Str "name")]))
+(def form-map {:id                        Str :name s/Str
+               (s/optional-key :required) s/Str
+               (s/optional-key :type)     s/Str
+               s/Any s/Any})
+
+(def html-form [(s/one s/Keyword "input-type") (s/one form-map "input-attributes") s/Any])
+(def html-form-group [(s/one html-label "html-label") (s/one html-form "form") Str])
+;(def html-form-group [(s/one s/Keyword "label") (s/one html-form "form") Str])
+
+

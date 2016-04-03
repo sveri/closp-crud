@@ -4,21 +4,18 @@
             [clj-dbcp.core :as dbcp]
             [clj-miscutil.core :as mu]
             [clj-liquibase.change :as ch]
-            [clojure.core.typed :as t]
-            [de.sveri.clospcrud.pre-types :as pt])
+            [schema.core :as s]
+            [de.sveri.clospcrud.schema :as schem]
+            [de.sveri.clospcrud.schema :as schem])
   (:import (liquibase.sql Sql)
            (liquibase.statement SqlStatement)
            (liquibase.sqlgenerator SqlGeneratorFactory)
            (liquibase.change Change)
            (java.util List)
            (liquibase.database Database)
-           (java.sql Connection)
-           (javax.sql DataSource)
            (liquibase.change.core CreateTableChange)))
 
-(t/ann ^:no-check clj-liquibase.core/make-db-instance [Connection -> Database])
-(t/ann ^:no-check get-db-connection [(t/U t/Keyword (t/HMap)) (t/U nil (t/HMap)) -> Database])
-(defn get-db-connection
+(s/defn get-db-connection :- s/Any
   "Create datasource from a given option-map. Some examples are below:
 (make-datasource :derby {:target :memory :database :emp})            ;; embedded databases
 (make-datasource :mysql {:host :localhost :database :emp
@@ -35,16 +32,15 @@
   [adapter opts]
   (let [ds (dbcp/make-datasource adapter opts)
         spec (spec/make-dbspec ds)
-        ^DataSource spec-ds (:datasource spec)
-        ^Connection conn (.getConnection spec-ds)]
+        spec-ds (:datasource spec)
+        conn (.getConnection spec-ds)]
     (assert conn)
     (lb/make-db-instance conn)))
 
-(t/ann ^:no-check change-sql [Change Database -> (t/HSeq [String])])
-(defn ^List change-sql
+(s/defn ^List change-sql :- [s/Str]
   "Return a list of SQL statements (string) that would be required to execute
   the given Change object instantly for current database without versioning."
-  [^Change change ds]
+  [^Change change ^Database ds]
   {:post [(mu/verify-cond (vector? %))
           (mu/verify-cond (every? string? %))]
    :pre  [(mu/verify-arg (instance? Change change))
@@ -52,16 +48,14 @@
   (let [sgf (SqlGeneratorFactory/getInstance)
         sql (map (fn [^SqlStatement stmt]
                    (map (fn [^Sql sql]
-                          ^String (.toSql sql))
+                          (.toSql sql))
                         (.generateSql sgf stmt ds)))
                  (.generateStatements change ds))]
     (into [] (flatten sql))))
 
-(t/ann ^:no-check create-table [pt/entity-description -> CreateTableChange])
-(defn create-table [ent-description]
+(s/defn create-table :- CreateTableChange [ent-description :- schem/entity-description]
   (mu/! (ch/create-table (:name ent-description)
                     (:columns ent-description))))
 
-(t/ann ^:no-check drop-table-sql [(t/HMap :mandatory {:name String}) -> String])
-(defn drop-table-sql [table1-definition]
+(s/defn drop-table-sql :- s/Str [table1-definition :- {:name s/Str s/Any s/Any}]
   (str "DROP TABLE " (:name table1-definition)))

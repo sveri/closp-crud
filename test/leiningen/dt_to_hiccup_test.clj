@@ -1,6 +1,9 @@
 (ns leiningen.dt-to-hiccup-test
   (:require [clojure.test :refer :all]
-            [de.sveri.clospcrud.td-to-hiccup :as tth]))
+            [de.sveri.clospcrud.td-to-hiccup :as tth]
+            [schema.core :as s]))
+
+(s/set-fn-validation! true)
 
 (def int-c [:id :int :null false :pk true :autoinc true])
 (def varchar-c [:name [:varchar 40] :null false :pk true])

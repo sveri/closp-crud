@@ -1,21 +1,20 @@
 (ns de.sveri.clospcrud.td-to-hiccup
-  (:require [clojure.core.typed :refer [defalias] :as t]
-            [de.sveri.clospcrud.pre-types :as pt])
-  (:import (clojure.lang Keyword)))
+  (:require [de.sveri.clospcrud.schema :as schem]
+            [schema.core :as s]))
 
 
 
-(t/ann wrap-with-vec-and-label' [pt/et-column pt/html-form -> pt/html-form-group])
 (defmulti wrap-with-vec-and-label' (fn [_ hicc-col] (:type (second hicc-col))))
 
-(defmethod wrap-with-vec-and-label' "checkbox" [col hicc-col]
-  [[:label hicc-col (name (first col))]])
+(s/defmethod wrap-with-vec-and-label' "checkbox" :- [schem/html-form-group]
+             [col :- schem/et-column hicc-col :- schem/html-form]
+             [[:label hicc-col (name (first col))]])
 
 (defmethod wrap-with-vec-and-label' :default [col hicc-col]
   [(let [n (name (first col))] [:label {:for n} n]) hicc-col])
 
-(t/ann add-required-attr [pt/form-map String pt/et-column -> pt/form-map])
-(defn add-required-attr [m col]
+(s/defn add-required-attr :- schem/form-map
+  [m :- schem/form-map col :- schem/et-column]
   (if (and (< 2 (count col)) (= (nth col 2) :null))
     (merge m {:required "required"})
     m))
@@ -29,13 +28,13 @@
                                               (add-required-attr col)
                                               (add-value ent-name col))]))
 
-(t/ann ^:no-check dt->hiccup [pt/et-column Keyword -> pt/html-form-group])
 (defmulti dt->hiccup
-          (t/fn [col :- pt/et-column _ :- String t :- Keyword]
+          (fn [col _  t]
             (let [[_ s] col]
               [(if (vector? s) (first s) s) t])))
 
-(defmethod dt->hiccup [:int :create] [col ent-name _]
+(s/defmethod dt->hiccup [:int :create] :- schem/html-form-group
+             [col :- schem/et-column ent-name :- s/Str _]
   (let [field-name (name (first col))]
     (wrap-with-vec-and-label' col
                               [:input.form-control
