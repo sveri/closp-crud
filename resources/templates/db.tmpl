@@ -1,9 +1,6 @@
 (ns [{ns}]
-  (:require [korma.core :refer [defentity many-to-many select where limit insert values update delete set-fields]]))
-
-(declare [{entityname}])
-
-(defentity [{entityname}])
+  (:require [korma.core :refer [defentity many-to-many select where limit insert values update delete set-fields]]
+            [[{entity-ns}] :refer [[{entityname}]]]))
 
 (defn get-all-[{entityname}]s [] (select [{entityname}]))
 

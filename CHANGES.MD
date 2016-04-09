@@ -1,6 +1,11 @@
 
 ## Changes
 
+### 0.2.1
+
+* Adding defentity declaration to entities.clj
+* Moving schema dependency to :provided profile
+
 ### 0.2.0
 
 * **Breaking Change** Using id for databases instead of uuid

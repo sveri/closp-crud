@@ -1,0 +1,6 @@
+(ns db.code.generator.entities
+  )
+
+(declare user)
+
+(defentity user)

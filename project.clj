@@ -1,4 +1,4 @@
-(defproject de.sveri/closp-crud "0.2.0"
+(defproject de.sveri/closp-crud "0.2.1"
   :description "CRUD plugin for closp"
   :url "https://github.com/sveri/closp-crud"
   :license {:name "Eclipse Public License"
@@ -12,7 +12,6 @@
                  [clj-time "0.9.0"]
                  [selmer "0.8.2"]
                  [hiccup "1.0.5"]
-                 [prismatic/schema "1.0.5"]
 
                  ;; Microsoft SQL Server using the jTDS driver
                  [net.sourceforge.jtds/jtds "1.2.4"]
@@ -26,6 +25,8 @@
                  [com.h2database/h2 "1.4.185"]]
   :source-paths ["src"]
   :test-paths ["test"]
-  :profiles {:dev {:resource-paths ["test-resources"]}}
+  :profiles {:dev {:resource-paths ["test-resources"]}
+             :provided {:dependencies [[prismatic/schema "1.0.5"]]}}
+
   :deploy-repositories [["clojars-self" {:url           "https://clojars.org/repo"
                                          :sign-releases false}]])
