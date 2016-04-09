@@ -12,20 +12,20 @@
 (defn sanitize-filename [filename]
   (clojure.string/replace filename #"-" "_"))
 
-(s/defn filter-id-columns :- [schem/et-column] [cols :- schem/et-columns]
+(s/defn filter-id-columns :- [schem/column] [cols :- schem/columns]
   (vec (remove #(= :id (first %)) cols)))
 
 (s/defn filter-dataset :- schem/entity-description [dataset :- schem/entity-description]
   (assoc dataset :columns (filter-id-columns (:columns dataset))))
 
-(s/defn get-colname-or-bool-convert :- s/Str [col :- schem/et-column]
-  (let [name (name (first col))]
+(s/defn get-colname-or-bool-convert :- s/Str [col :- schem/column]
+  (let [name (:name col)]
     (if (= :boolean (second col)) (str "(convert-boolean " name ")") name)))
 
 (s/defn ds-columns->template-columns :- [{:colname s/Str :colname-fn s/Str}]
-  [cols :- schem/et-columns]
+  [cols :- schem/columns]
   (mapv (fn [col]
-          {:colname (name (first col))
+          {:colname (:name col)
            :colname-fn (get-colname-or-bool-convert col)})
         (filter-id-columns cols)))
 

@@ -1,39 +1,31 @@
 (ns leiningen.html-creator-test
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.html-creator :as ht]
-            [schema.core :as s]))
+            [leiningen.common :refer [table1-definition]]
+            [schema.test :as st]))
 
-(s/set-fn-validation! true)
+(use-fixtures :once st/validate-schemas)
 
-(def table1-definition {:name    "table1"
-                        :columns [[:id :int :null false :pk true :autoinc true]
-                                  [:fooname [:varchar 40] :null false]
-                                  [:male :boolean :null false]
-                                  [:description :text]]})
-
-(def underscore-def {:name "table2"
-                     :columns [[:some_thing :boolean :null false]]})
+(def underscore-def {:name    "table2"
+                     :columns [{:name "some_thing" :type :boolean :null false}]})
 
 (def car-definition {:name    "car"
-                     :columns [[:id :int :null false :pk true :autoinc true]
-                               [:first_name [:varchar 30]]
-                               [:email [:varchar 30] :null false :unique true]
-                               [:last_login :time]
-                               [:is_active :boolean :null false :default false]
-                               [:activationid [:varchar 100] :unique true]]})
+                     :columns [{:name "id" :type :int :null false :pk true :autoinc true}
+                               {:name "first_name" :type :varchar :max-length 30}
+                               {:name "email" :type :varchar :max-length 30 :null false :unique true}]})
 
 (deftest create-html
   (let [html (ht/create-html table1-definition)]
-    (is (= true (.contains html "table1/{{crea")))
-    (is (= true (.contains html "value=\"{{table1.fooname")))))
+    (is (= true (.contains html "person/{{crea")))
+    (is (= true (.contains html "value=\"{{person.fooname")))))
 
 (deftest text-html
   (let [html (ht/create-html table1-definition)]
-    (is (= true (.contains html "{{table1.description}}")))))
+    (is (= true (.contains html "{{person.description}}")))))
 
 (deftest bool-html
   (let [html (ht/create-html table1-definition)]
-    (is (= true (.contains html (str "{%if table1.male = 1 %}checked{% endif %}"))))))
+    (is (= true (.contains html (str "{%if person.male = 1 %}checked{% endif %}"))))))
 
 (deftest underscore-in-col-name
   (let [html (ht/create-html underscore-def)]

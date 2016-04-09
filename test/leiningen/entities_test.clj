@@ -1,14 +1,10 @@
 (ns leiningen.entities-test
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.entities :as ent]
-            [schema.core :as s]))
+            [leiningen.common :refer [table1-definition]]
+            [schema.test :as st]))
 
-(s/set-fn-validation! true)
-
-(def table1-definition {:name    "table1"
-                        :columns [[:id :int :null false :pk true :autoinc true]
-                                  [:fooname [:varchar 40] :null false]
-                                  [:age :int :null false]]})
+(use-fixtures :once st/validate-schemas)
 
 (def h2-uri "jdbc:h2:mem:test_mem")
 

@@ -7,10 +7,10 @@
 
 (def bool-conv-fn '(defn convert-boolean [b] (if (= "on" b) true false)))
 
-(s/defn contains-boolean? :- (s/maybe s/Keyword) [col :- schem/et-column]
+(s/defn contains-boolean? :- (s/maybe s/Keyword) [col :- schem/column]
   (some #{:boolean} col))
 
-(s/defn create-add-fns :- s/Str [cols :- schem/et-columns]
+(s/defn create-add-fns :- s/Str [cols :- schem/columns]
   (when (< 0 (count (filter contains-boolean? cols)))
     (pp/with-pprint-dispatch pp/code-dispatch bool-conv-fn)))
 

@@ -53,9 +53,33 @@
                  (.generateStatements change ds))]
     (into [] (flatten sql))))
 
+(s/defn retrieve-column-type :- (s/cond-pre schem/column-types
+                                            [(s/one s/Keyword "type") (s/one s/Num "length")])
+  [col :- schem/column]
+  (if (some #{:char :varchar} [(:type col)]) [(:type col) (get col :max-length 100)]
+                                             (:type col)))
+
+
+(s/defn convert-optional-attr :- [s/Any]
+  [col :- schem/column]
+  (let [cleaned-col (dissoc col :name :type :max-length)]
+    (if (not-empty cleaned-col)
+      (reduce #(into %2 %1) cleaned-col)
+      [])))
+
+(s/defn entity->liquibase-entity :- schem/liqui-entity-description
+  [desc :- schem/entity-description]
+  (let [cols (:columns desc)
+        conv-cols (mapv (fn [col] (vec (concat [(keyword (:name col))
+                                                (retrieve-column-type col)]
+                                               (convert-optional-attr col))))
+                        cols)]
+    (assoc desc :columns conv-cols)))
+
 (s/defn create-table :- CreateTableChange [ent-description :- schem/entity-description]
-  (mu/! (ch/create-table (:name ent-description)
-                    (:columns ent-description))))
+  (let [liq-desc (entity->liquibase-entity ent-description)]
+    (mu/! (ch/create-table (:name liq-desc)
+                           (:columns liq-desc)))))
 
 (s/defn drop-table-sql :- s/Str [table1-definition :- {:name s/Str s/Any s/Any}]
   (str "DROP TABLE " (:name table1-definition)))
