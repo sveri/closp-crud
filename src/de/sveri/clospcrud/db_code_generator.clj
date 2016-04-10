@@ -43,5 +43,5 @@
         file (io/file fp-path)
         new-content (add-db-to-entities file (:name dataset))]
     (spit file new-content)
-    (println "Generated db entities file.")))
+    (println "Added entity to entities file.")))
 
