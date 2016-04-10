@@ -66,9 +66,10 @@
       (spit (delete-html dataset))))
 
 ; index
+; TODO needs test
 (s/defn create-tds-for-index :- s/Str [dataset :- schem/entity-description]
   (let [e-name (:name dataset)
-        conv-col-name #(name (first %))
+        conv-col-name #(:name %)
         san-cols (h/filter-id-columns (:columns dataset))
         first-col (first san-cols)
         hicc-first-col [:td [:a {:href (str "/" e-name "/{{" e-name ".id}}")}

@@ -36,7 +36,6 @@
         templ-path (.getAbsolutePath (File. "./" (:templates config)))
         src-path (.getAbsolutePath (File. "./" clj-src))
         dataset (ent/load-entity-from-path file-in-path)]
-    ;(dcg/write-db-entities ns-entities dataset src-path)
 
     (if (files-exist? (:name dataset) ns-db ns-routes templ-path src-path)
       (println "Some file exists already. Cancelling.")

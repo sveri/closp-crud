@@ -30,10 +30,11 @@ You need a table definition in a file somewhere. It may look like this:
 
     ; closp-definitions/person.edn
     {:name    "person"
-     :columns [[:id :int :null false :pk true :autoinc true]
-               [:name [:varchar 40] :null false]
-               [:age :int :null false]
-               [:male :boolean :default true]]}
+     :columns [{:name "id" :type :int :null false :pk true :autoinc true}
+               {:name "first_name" :type :varchar :max-length 30}
+               {:name "last_name" :type :varchar :max-length 30}
+               {:name "role" :type :varchar :max-length 30}
+               {:name "email" :type :varchar :max-length 30 :null false :unique true}]}
                
 Then run
 
@@ -143,31 +144,43 @@ file are not supported.
 Example: 
 
     {:name    "person"
-     :columns [[:id :int :null false :pk true :autoinc true]
-               [:name [:varchar 40] :null false]
-               [:age :int :null false]
-               [:male :boolean :default true]]}
+     :columns [{:name "id" :type :int :null false :pk true :autoinc true}
+              {:name "first_name" :type :varchar :max-length 30}
+              {:name "last_name" :type :varchar :max-length 30}
+              {:name "role" :type :varchar :max-length 30}
+              {:name "email" :type :varchar :max-length 30 :null false :unique true}]}
 
 ### Structure
 Two key / value pairs are expected:
 
 * **:name** The name of the entity
-* **:columns** A vector of vectors containing the description for each single column in the table.
+* **:columns** A vector of maps containing the description for each single column in the table.
 
 ### Column definitions
 The structure of the columns is somewhat flexible.
 
-* **Mandatory** The first entry will be the name of the column
-* **Mandatory** The second entry will be the type of the column. It has to be of the form `Keyword|[Keyword Int]` which means
-it is either of a fixed length type like boolean or a variable length type like varchar.
-* **Optional** Then come the optional entries like a given default value or if it is nullable or not
+* **Mandatory** `:name` - The name of the column
+* **Mandatory** `:type` - The type of the column wih can be one of the following:
+    :int :varchar :boolean :text :time :date
+    :char :binary :smallint :bigint :decimal
+    :float :double :real :timestamp
+    If you choose a `:char` or `:varchar` type it makes sense to add the `:max-length` option to the map. 
+
+* **Optional** 
+    :null       Bool
+    :max-length Num
+    :required   Bool
+    :pk         Bool
+    :autoinc    Bool
+    :unique     Bool
+    :default    s/Any
 
 Examples:
 
-* **[:id :int :null false :pk true :autoinc true]** creates a primary key named "id" of type "int" which will 
+* **{:name "id" :type :int :null false :pk true :autoinc true}** creates a primary key named "id" of type "int" which will 
 autoincrement 
-* **[:age :int :null false]** creates an "age" column of type "int" which cannot be null
-* **[:male :boolean :default true]** creates a "male" column of type "boolean"  which defaults to true and can be null.
+* **{:name "age" :type :int :null false}** creates an "age" column of type "int" which cannot be null
+* **{:name "male" :tpye :boolean :default true}** creates a "male" column of type "boolean"  which defaults to true and can be null.
 
 
 For a complete reference of supported tags please look at: <http://www.liquibase.org/documentation/column.html>
