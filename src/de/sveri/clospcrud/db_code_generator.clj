@@ -10,7 +10,6 @@
 (s/defn dataset->template-map :- {:entityname s/Str :ns s/Str :entity-ns s/Str
                                   :cols       [{:colname    s/Str
                                                 :colname-fn s/Str}]}
-  "Will remove every column with the name :id"
   [ns :- s/Str entity-ns :- s/Str ds :- schem/entity-description]
   (let [cols (h/ds-columns->template-columns (:columns ds))]
     {:entityname (:name ds)

@@ -12,11 +12,11 @@
 (defn sanitize-filename [filename]
   (clojure.string/replace filename #"-" "_"))
 
-(s/defn filter-id-columns :- [schem/column] [cols :- schem/columns]
-  (vec (remove #(= :id (first %)) cols)))
+(s/defn remove-autoinc-columns :- [schem/column] [cols :- schem/columns]
+  (vec (remove #(= true (:autoinc %)) cols)))
 
 (s/defn filter-dataset :- schem/entity-description [dataset :- schem/entity-description]
-  (assoc dataset :columns (filter-id-columns (:columns dataset))))
+  (assoc dataset :columns (remove-autoinc-columns (:columns dataset))))
 
 (s/defn get-colname-or-bool-convert :- s/Str [col :- schem/column]
   (let [name (:name col)]
@@ -27,7 +27,7 @@
   (mapv (fn [col]
           {:colname (:name col)
            :colname-fn (get-colname-or-bool-convert col)})
-        (filter-id-columns cols)))
+        (remove-autoinc-columns cols)))
 
 (s/defn get-ns-file-path :- s/Str [ns :- s/Str filename :- s/Str src-path :- s/Str]
   (str src-path "/" (str/replace ns #"\." "/") "/" filename))
