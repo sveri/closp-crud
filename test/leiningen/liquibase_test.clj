@@ -1,7 +1,7 @@
 (ns leiningen.liquibase-test
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.liquibase :as liq]
-            [leiningen.common :refer [table1-definition]]
+            [leiningen.common :refer [person-definition]]
             [schema.test :as st]))
 
 (use-fixtures :once st/validate-schemas)
@@ -23,7 +23,7 @@
 
 
 (deftest convert-entity
-  (let [converted-cols (:columns (liq/entity->liquibase-entity table1-definition))]
+  (let [converted-cols (:columns (liq/entity->liquibase-entity person-definition))]
     (is (= [:id :int :null false :pk true :autoinc true] (first converted-cols)))
     (is (= [:fooname [:varchar 40] :null false] (second converted-cols)))
     (is (= [:age :int :null false] (nth converted-cols 2)))))

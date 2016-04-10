@@ -7,12 +7,12 @@
 
 (def bool-conv-fn '(defn convert-boolean [b] (if (= "on" b) true false)))
 
-(s/defn contains-boolean? :- (s/maybe s/Keyword) [col :- schem/column]
-  (some #{:boolean} col))
+(s/defn boolean? :- s/Bool [col :- schem/column]
+        (= :boolean (get col :type)))
 
-(s/defn create-add-fns :- s/Str [cols :- schem/columns]
-  (when (< 0 (count (filter contains-boolean? cols)))
-    (pp/with-pprint-dispatch pp/code-dispatch bool-conv-fn)))
+(s/defn create-add-fns :- (s/maybe s/Str) [cols :- schem/columns]
+  (when (< 0 (count (filter boolean? cols)))
+    (str (pp/with-pprint-dispatch pp/code-dispatch bool-conv-fn))))
 
 (s/defn store-route :- nil
   [ns-routes :- s/Str ns-db :- s/Str ns-layout :- s/Str dataset :- schem/entity-description src-path :- s/Str]

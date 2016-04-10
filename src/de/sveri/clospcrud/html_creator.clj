@@ -66,7 +66,6 @@
       (spit (delete-html dataset))))
 
 ; index
-; TODO needs test
 (s/defn create-tds-for-index :- s/Str [dataset :- schem/entity-description]
   (let [e-name (:name dataset)
         conv-col-name #(:name %)
