@@ -20,7 +20,7 @@
 
 (s/defn get-colname-or-bool-convert :- s/Str [col :- schem/column]
   (let [name (:name col)]
-    (if (= :boolean (second col)) (str "(convert-boolean " name ")") name)))
+    (if (= :boolean (:type col)) (str "(convert-boolean " name ")") name)))
 
 (s/defn ds-columns->template-columns :- [{:colname s/Str :colname-fn s/Str}]
   [cols :- schem/columns]

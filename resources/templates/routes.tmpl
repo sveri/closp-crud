@@ -1,4 +1,5 @@
 (ns [{ns}]
+  (:refer-clojure :exclude [update])
   (:require [compojure.core :refer [routes GET POST DELETE]]
             [noir.response :as resp]
             [ring.util.response :refer [response content-type]]
@@ -30,7 +31,7 @@
 
 (defn update [id [% for col in cols %][{col.colname}] [% endfor %]]
   (try
-    (db/update-[{ent-name}] id {[% for col in cols %]:[{col.colname}] [{col.colname-fn}] [% endfor %] })
+    (db/update-[{ent-name}] id {[% for col in functionized-cols %]:[{col.colname}] [{col.colname-fn}] [% endfor %] })
     (catch Exception e (timb/error e (str "Something went wrong updating: " id))
                        (layout/flash-result (str "An error occured.") "alert-danger")))
   (resp/redirect "/[{ent-name}]"))

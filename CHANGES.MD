@@ -1,6 +1,13 @@
 
 ## Changes
 
+### 0.3.0
+
+* **Breaking change** - the schema for closp-crud entities did change. 
+* Important bugfix for boolean fields
+* Adding tests
+* Minor stuff
+
 ### 0.2.1
 
 * Adding defentity declaration to entities.clj
