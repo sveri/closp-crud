@@ -1,5 +1,5 @@
 (ns de.sveri.clospcrud.schema
-  (:require [schema.core :as s :refer [Str Num Bool]]))
+  (:require [schema.core :as s :refer [Str Num Bool Any]]))
 
 
 ; luiquibase schema
@@ -19,14 +19,16 @@
                           :char :binary :smallint :bigint :decimal
                           :float :double :real :timestamp))
 
-(def column {:name                        s/Str :type column-types
+(def column {:name                        Str :type column-types
              (s/optional-key :null)       Bool
              (s/optional-key :max-length) Num
              (s/optional-key :required)   Bool
              (s/optional-key :pk)         Bool
              (s/optional-key :autoinc)    Bool
              (s/optional-key :unique)     Bool
-             (s/optional-key :default)    s/Any})
+             (s/optional-key :default)    Any
+             (s/optional-key :refs)       Str
+             (s/optional-key :fkname)     Str})
 
 (def columns [column])
 
