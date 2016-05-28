@@ -1,4 +1,5 @@
-(ns leiningen.common)
+(ns leiningen.common
+  (:require [clojure.spec :as s]))
 
 (def person-definition {:name    "person"
                         :columns [{:name "id" :type :int :null false :pk true :autoinc true}

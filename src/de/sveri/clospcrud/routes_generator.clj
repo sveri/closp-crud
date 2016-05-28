@@ -3,19 +3,23 @@
             [clojure.pprint :as pp]
             [de.sveri.clospcrud.helper :as h]
             [de.sveri.clospcrud.schema :as schem]
-            [schema.core :as s]))
+            [clojure.spec :as s]))
 
 (def bool-conv-fn '(defn convert-boolean [b] (if (= "on" b) true false)))
 
-(s/defn boolean? :- s/Bool [col :- schem/column]
-        (= :boolean (get col :type)))
+(s/fdef boolean? :args (s/cat :col ::schem/column) :ret #(instance? Boolean %))
+(defn boolean? [col] (= :boolean (get col :type)))
 
-(s/defn create-add-fns :- (s/maybe s/Str) [cols :- schem/columns]
+(s/fdef create-add-fns :args (s/cat :cols (s/spec ::schem/columns))
+        :ret (s/nilable string?))
+(defn create-add-fns [cols]
   (when (< 0 (count (filter boolean? cols)))
     (str (pp/with-pprint-dispatch pp/code-dispatch bool-conv-fn))))
 
-(s/defn store-route :- nil
-  [ns-routes :- s/Str ns-db :- s/Str ns-layout :- s/Str dataset :- schem/entity-description src-path :- s/Str]
+(s/fdef store-route :args (s/cat :ns-routes string? :ns-db string? :ns-layout string?
+                                 :dataset ::schem/entity-description :src-path string?)
+        :ret nil?)
+(defn store-route [ns-routes ns-db ns-layout dataset src-path]
   (->>
     (selm/render-file "templates/routes.tmpl"
                       {:ns                (str ns-routes "." (:name dataset))

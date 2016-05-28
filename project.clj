@@ -3,8 +3,8 @@
   :url "https://github.com/sveri/closp-crud"
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.6.0"]
-                 [clj-liquibase "0.5.2"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha3"]
+                 [clj-liquibase "0.6.0"]
                  [clj-jdbcutil "0.1.0"]
                  [clj-dbcp "0.8.1"]
                  [org.clojure/tools.cli "0.3.1"]
@@ -22,11 +22,14 @@
                  ;; SQLite
                  [org.xerial/sqlite-jdbc "3.8.7"]
                  ;; H2
-                 [com.h2database/h2 "1.4.185"]]
+                 [com.h2database/h2 "1.4.185"]
+                 [org.clojure/test.check "0.9.0"]]
   :source-paths ["src"]
   :test-paths ["test"]
   :profiles {:dev {:resource-paths ["test-resources"]}
              :provided {:dependencies [[prismatic/schema "1.0.5"]]}}
 
   :deploy-repositories [["clojars-self" {:url           "https://clojars.org/repo"
-                                         :sign-releases false}]])
+                                         :sign-releases false}]]
+  :test-refresh {:quiet true
+                 :changes-only true})

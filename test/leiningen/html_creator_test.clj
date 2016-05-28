@@ -2,7 +2,8 @@
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.html-creator :as ht]
             [leiningen.common :refer [person-definition]]
-            [schema.test :as st]))
+            [schema.test :as st]
+            [clojure.spec :as s]))
 
 (use-fixtures :once st/validate-schemas)
 
@@ -41,3 +42,5 @@
   (let [html (ht/create-tds-for-index person-definition)]
     (is (.contains html "<td>{{person.age}}</td><td>{{person.male}}</td><td>{{person.description}}</td>"))
     (is (.contains html "<a href=\"/person/{{person.id}}\">{{person.fooname}}</a></td>"))))
+
+(s/instrument-all)

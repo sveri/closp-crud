@@ -2,7 +2,8 @@
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.entities :as ent]
             [leiningen.common :refer [person-definition]]
-            [schema.test :as st]))
+            [schema.test :as st]
+            [clojure.spec :as s]))
 
 (use-fixtures :once st/validate-schemas)
 
@@ -14,3 +15,5 @@
     (is (.contains sql "id INT AUTO_INCREMENT NOT NULL"))
     (is (.contains sql "fooname VARCHAR(40) NOT NULL"))
     (is (.contains sql "age INT NOT NULL"))))
+
+(s/instrument-all)

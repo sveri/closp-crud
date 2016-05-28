@@ -6,41 +6,51 @@
             [selmer.parser :as selm]
             [clojure.string :as str]
             [de.sveri.clospcrud.schema :as schem]
-            [schema.core :as s])
+            [de.sveri.clospcrud.html-schema :as hschem]
+            [clojure.spec :as s])
   (:import (java.lang System)))
+
+
+
+
 
 (def line-sep (System/lineSeparator))
 
-(s/defn hicc->html :- s/Str [se :- [s/Any]]
+(s/fdef hicc->html :args (s/cat :se (s/cat :hiccup (s/+ ::s/any))) :ret string?)
+(defn hicc->html [se]
   (-> se
       (hicc/html)
       (str/replace #"/div>" (str "/div>" line-sep))))
 
-(s/defn get-and-create-templ-fp-path! :- s/Str
-  [filename :- s/Str templ-path :- s/Str dataset :- schem/entity-description]
+(s/fdef get-and-create-templ-fp-path! :args (s/cat :filename string? :templ-path string? :dataset ::schem/entity-description)
+        :ret string?)
+(defn get-and-create-templ-fp-path! [filename templ-path dataset]
   (let [folder-path (str templ-path "/" (:name dataset))
         fp (str folder-path "/" filename)]
     (faf/create-if-not-exists folder-path)
     fp))
 
-(defmulti wrap-with-form-group  (fn [col-vec] (:type (second (second col-vec)))))
 
-(s/defmethod wrap-with-form-group "checkbox" :- [s/Keyword schem/html-form-group]
-             [col-vec :- schem/html-form-group]
+(s/fdef wrap-with-form-group :args (s/cat :col-vec ::hschem/html-form) :ret ::hschem/html-form)
+(defmulti wrap-with-form-group (fn [col-vec] (:type (second (second col-vec)))))
+
+(defmethod wrap-with-form-group "checkbox" [col-vec]
   (vec (concat [:div] col-vec)))
 
 (defmethod wrap-with-form-group :default [col-vec]
   (vec (concat [:div.form-group] col-vec)))
 
 ; create
-(s/defn insert-extra-tags :- s/Str [form-groups-str :- s/Str entity-name :- s/Str]
+(s/fdef insert-extra-tags :args (s/cat :form-groups-str string? :entity-nam string?) :ret string?)
+(defn insert-extra-tags [form-groups-str entity-name]
   (if (.contains form-groups-str "checkbox")
     (let [field (second (re-find #"id=\"([a-zA-Z-_]*)\"" form-groups-str))]
-     (str/replace form-groups-str #"type=\"checkbox\""
-                  (str "type=\"checkbox\" " "{%if " entity-name "." field " = 1 %}checked{% endif %}")))
+      (str/replace form-groups-str #"type=\"checkbox\""
+                   (str "type=\"checkbox\" " "{%if " entity-name "." field " = 1 %}checked{% endif %}")))
     form-groups-str))
 
-(s/defn create-html :- s/Str [dataset :- schem/entity-description]
+(s/fdef create-html :args (s/cat :dataset ::schem/entity-description) :ret string?)
+(defn create-html [dataset]
   (let [cleaned-dataset (h/filter-dataset dataset)
         entity-name (:name dataset)
         form-groups (map
@@ -53,20 +63,24 @@
                                                :form-groups (str/join line-sep form-groups)}
                       {:tag-open \[ :tag-close \]})))
 
-(s/defn store-create-template :- nil [dataset :- schem/entity-description templ-path :- s/Str]
+(s/fdef store-create-template :args (s/cat :dataset ::schem/entity-description :templ-path string?) :ret nil?)
+(defn store-create-template [dataset templ-path]
   (-> (get-and-create-templ-fp-path! "/create.html" templ-path dataset)
       (spit (create-html dataset))))
 
 ; delete
-(s/defn delete-html :- s/Str [dataset :- schem/entity-description]
+(s/fdef delete-html :args (s/cat :dataset ::schem/entity-description) :ret string?)
+(defn delete-html [dataset]
   (selm/render-file "templates/delete.html" {:entityname (:name dataset)} {:tag-open \[ :tag-close \]}))
 
-(s/defn store-delete-template :- nil [dataset :- schem/entity-description templ-path :- s/Str]
+(s/fdef store-delete-template :args (s/cat :dataset ::schem/entity-description :templ-path string?) :ret nil?)
+(defn store-delete-template [dataset templ-path]
   (-> (get-and-create-templ-fp-path! "/delete.html" templ-path dataset)
       (spit (delete-html dataset))))
 
 ; index
-(s/defn create-tds-for-index :- s/Str [dataset :- schem/entity-description]
+(s/fdef create-tds-for-index :args (s/cat :dataset ::schem/entity-description) :ret string?)
+(defn create-tds-for-index [dataset]
   (let [e-name (:name dataset)
         conv-col-name #(:name %)
         san-cols (h/remove-autoinc-columns (:columns dataset))
@@ -79,16 +93,19 @@
     (str (hicc->html hicc-first-col) (str line-sep "\t\t\t\t") (hicc->html hicc-rest-cols) (str line-sep "\t\t\t\t")
          (hicc->html hicc-delete-col))))
 
-(s/defn index-html :- s/Str [dataset :- schem/entity-description]
+(s/fdef index-html :args (s/cat :dataset ::schem/entity-description) :ret string?)
+(defn index-html [dataset]
   (selm/render-file "templates/index.html" {:entityname (:name dataset)
-                                            :tds (create-tds-for-index dataset)}
+                                            :tds        (create-tds-for-index dataset)}
                     {:tag-open \[ :tag-close \]}))
 
-(s/defn store-index-template :- nil [dataset :- schem/entity-description templ-path :- s/Str]
+(s/fdef store-index-template :args (s/cat :dataset ::schem/entity-description :templ-path string?) :ret nil?)
+(defn store-index-template [dataset templ-path]
   (-> (get-and-create-templ-fp-path! "/index.html" templ-path dataset)
       (spit (index-html dataset))))
 
-(s/defn store-html-files :- nil [dataset :- schem/entity-description templ-path :- s/Str]
+(s/fdef store-html-files :args (s/cat :dataset ::schem/entity-description :templ-path string?) :ret nil?)
+(defn store-html-files [dataset templ-path]
   (store-create-template dataset templ-path)
   (store-delete-template dataset templ-path)
   (store-index-template dataset templ-path)

@@ -2,7 +2,8 @@
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.routes-generator :as rg]
             [leiningen.common :refer [person-definition]]
-            [schema.test :as st]))
+            [schema.test :as st]
+            [clojure.spec :as s]))
 
 (use-fixtures :once st/validate-schemas)
 
@@ -14,3 +15,6 @@
   (let [add-fns (rg/create-add-fns (:columns person-definition))]
     (is (.contains add-fns "(defn convert-boolean [b] (if (= \"on\" b) true false))"))
     (is (nil? (rg/create-add-fns [{:name "foo" :type :int}])))))
+
+
+(s/instrument-all)

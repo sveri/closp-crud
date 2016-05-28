@@ -2,7 +2,8 @@
   (:require [clojure.test :refer :all]
             [schema.test :as st]
             [de.sveri.clospcrud.liquibase :as liq]
-            [leiningen.common :refer [person-definition]]))
+            [leiningen.common :refer [person-definition]]
+            [clojure.spec :as s]))
 
 (use-fixtures :once st/validate-schemas)
 
@@ -18,3 +19,6 @@
 
 (deftest drop-table-h2
   (is (= (str "DROP TABLE " (:name person-definition)) (liq/drop-table-sql person-definition))))
+
+
+(s/instrument-all)

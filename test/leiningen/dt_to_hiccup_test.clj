@@ -1,7 +1,8 @@
 (ns leiningen.dt-to-hiccup-test
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.td-to-hiccup :as tth]
-            [schema.test :as st]))
+            [schema.test :as st]
+            [clojure.spec :as s]))
 
 (use-fixtures :once st/validate-schemas)
 
@@ -35,3 +36,6 @@
 (deftest conv-boolean
   (is (= [[:label [:input.form-control {:id "male_human" :checked "checked" :name "male_human" :type "checkbox"}] "male_human"]]
          (tth/dt->hiccup underscore-col-name "fooname" :create))))
+
+
+(s/instrument-all)
