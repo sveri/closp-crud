@@ -6,7 +6,6 @@
             [clojure.string :as str]
             [de.sveri.clojure.commons.files.faf :as faf]
             [de.sveri.clospcrud.schema :as schem]
-            [schema.core :as sc]
             [clojure.spec :as s]))
 
 
@@ -27,7 +26,7 @@
   (assoc dataset :columns (remove-autoinc-columns (:columns dataset))))
 
 (s/fdef get-colname-or-bool-convert :args (s/cat :col ::schem/column) :ret string?)
-(sc/defn get-colname-or-bool-convert [col]
+(defn get-colname-or-bool-convert [col]
   (let [name (:name col)]
     (if (= :boolean (:type col)) (str "(convert-boolean " name ")") name)))
 

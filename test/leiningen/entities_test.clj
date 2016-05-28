@@ -2,10 +2,7 @@
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.entities :as ent]
             [leiningen.common :refer [person-definition]]
-            [schema.test :as st]
             [clojure.spec :as s]))
-
-(use-fixtures :once st/validate-schemas)
 
 (def h2-uri "jdbc:h2:mem:test_mem")
 

@@ -1,6 +1,10 @@
 
 ## Changes
 
+### 0.4.0
+
+* **Breaking Change** - using clojure.spec instead of schema
+
 ### 0.3.0
 
 * **Breaking change** - the schema for closp-crud entities did change. 

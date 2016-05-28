@@ -1,11 +1,8 @@
 (ns leiningen.sql-generation-test
   (:require [clojure.test :refer :all]
-            [schema.test :as st]
             [de.sveri.clospcrud.liquibase :as liq]
             [leiningen.common :refer [person-definition]]
             [clojure.spec :as s]))
-
-(use-fixtures :once st/validate-schemas)
 
 (defn create-h2-connection []
   (liq/get-db-connection :h2 {:target :memory :database :default}))

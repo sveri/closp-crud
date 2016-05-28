@@ -2,10 +2,7 @@
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.html-creator :as ht]
             [leiningen.common :refer [person-definition]]
-            [schema.test :as st]
             [clojure.spec :as s]))
-
-(use-fixtures :once st/validate-schemas)
 
 (def underscore-def {:name    "table2"
                      :columns [{:name "some_thing" :type :boolean :null false}]})

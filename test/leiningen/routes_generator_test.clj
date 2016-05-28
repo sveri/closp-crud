@@ -2,10 +2,7 @@
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.routes-generator :as rg]
             [leiningen.common :refer [person-definition]]
-            [schema.test :as st]
             [clojure.spec :as s]))
-
-(use-fixtures :once st/validate-schemas)
 
 (deftest contains-boolean
   (is (rg/boolean? {:name "too" :type :boolean}))

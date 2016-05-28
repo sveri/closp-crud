@@ -2,10 +2,7 @@
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.liquibase :as liq]
             [leiningen.common :refer [person-definition]]
-            [schema.test :as st]
             [clojure.spec :as s]))
-
-(use-fixtures :once st/validate-schemas)
 
 (deftest retrieve-type
   (is (= :int (liq/retrieve-column-type {:name "id" :type :int})))

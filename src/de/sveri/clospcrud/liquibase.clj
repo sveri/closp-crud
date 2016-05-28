@@ -4,7 +4,6 @@
             [clj-dbcp.core :as dbcp]
             [clj-miscutil.core :as mu]
             [clj-liquibase.change :as ch]
-            [schema.core :as sc]
             [de.sveri.clospcrud.schema :as schem]
             [de.sveri.clospcrud.liquibase-schema :as lschem]
             [clojure.spec :as s])

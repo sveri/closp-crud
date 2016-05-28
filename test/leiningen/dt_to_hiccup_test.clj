@@ -1,10 +1,7 @@
 (ns leiningen.dt-to-hiccup-test
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.td-to-hiccup :as tth]
-            [schema.test :as st]
             [clojure.spec :as s]))
-
-(use-fixtures :once st/validate-schemas)
 
 (def int-c {:name "id" :type :int :null false :pk true :autoinc true})
 (def varchar-c {:name "name" :type :varchar :max-length 40 :null false :pk true})

@@ -2,7 +2,6 @@
   (:require [de.sveri.clospcrud.liquibase :as liq]
             [de.sveri.clojure.commons.files.edn :as comm-edn]
             [de.sveri.clospcrud.helper :as h]
-            [schema.core :as sc]
             [de.sveri.clospcrud.schema :as schem]
             [clojure.spec :as s]))
 

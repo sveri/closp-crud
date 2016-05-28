@@ -26,8 +26,7 @@
                  [org.clojure/test.check "0.9.0"]]
   :source-paths ["src"]
   :test-paths ["test"]
-  :profiles {:dev {:resource-paths ["test-resources"]}
-             :provided {:dependencies [[prismatic/schema "1.0.5"]]}}
+  :profiles {:dev {:resource-paths ["test-resources"]}}
 
   :deploy-repositories [["clojars-self" {:url           "https://clojars.org/repo"
                                          :sign-releases false}]]

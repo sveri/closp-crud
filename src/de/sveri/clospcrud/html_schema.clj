@@ -23,3 +23,5 @@
 (s/def ::form-with-complete-label (s/cat :div (s/? keyword?) :label (s/spec ::html-label) :form-control (s/spec ::form-control)))
 
 (s/def ::html-form (s/or :simple (s/spec ::form-with-simple-label) :complete (s/spec ::form-with-complete-label)))
+
+(s/def ::hicc-col (s/cat :input-type keyword? :input-attributes ::form-map :rest (s/* ::s/any)))
