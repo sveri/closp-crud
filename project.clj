@@ -22,13 +22,13 @@
                  ;; SQLite
                  [org.xerial/sqlite-jdbc "3.8.7"]
                  ;; H2
-                 [com.h2database/h2 "1.4.185"]
-                 [org.clojure/test.check "0.9.0"]]
+                 [com.h2database/h2 "1.4.185"]]
   :source-paths ["src"]
   :test-paths ["test"]
-  :profiles {:dev {:resource-paths ["test-resources"]}}
+  :profiles {:dev {:resource-paths ["test-resources"]
+                   :dependencies   [[org.clojure/test.check "0.9.0"]]}}
 
   :deploy-repositories [["clojars-self" {:url           "https://clojars.org/repo"
                                          :sign-releases false}]]
-  :test-refresh {:quiet true
+  :test-refresh {:quiet        true
                  :changes-only true})

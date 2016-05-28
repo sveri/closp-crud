@@ -1,9 +1,11 @@
 (ns leiningen.db-code-generator-test
   (:require [clojure.test :refer :all]
             [de.sveri.clospcrud.db-code-generator :refer :all]
+            [de.sveri.clospcrud.schema :as schem]
             [leiningen.common :refer [person-definition]]
             [clojure.java.io :as io]
-            [clojure.spec :as s]))
+            [clojure.spec :as s]
+            [clojure.spec.gen :as gen]))
 
 (def db-ns "foo.bar")
 (def entity-ns "foo.bar.db.entities")

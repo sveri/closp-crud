@@ -7,7 +7,7 @@
 
 (def bool-conv-fn '(defn convert-boolean [b] (if (= "on" b) true false)))
 
-(s/fdef boolean? :args (s/cat :col ::schem/column) :ret #(instance? Boolean %))
+(s/fdef boolean? :args (s/cat :col ::schem/column) :ret ::schem/boolean)
 (defn boolean? [col] (= :boolean (get col :type)))
 
 (s/fdef create-add-fns :args (s/cat :cols (s/spec ::schem/columns))

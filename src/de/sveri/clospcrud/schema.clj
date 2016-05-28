@@ -2,6 +2,7 @@
   (:require [clojure.spec :as s]))
 
 (s/def ::name string?)
+(s/def ::boolean #{true false})
 
 (s/def ::entityname string?)
 (s/def ::entity-ns string?)
@@ -18,19 +19,19 @@
 
 
 (s/def ::type ::column-types)
-(s/def ::null #(instance? Boolean %))
+(s/def ::null ::boolean)
 (s/def ::max-length number?)
-(s/def ::required #(instance? Boolean %))
-(s/def ::pk #(instance? Boolean %))
-(s/def ::autoinc #(instance? Boolean %))
-(s/def ::unique #(instance? Boolean %))
+(s/def ::required ::boolean)
+(s/def ::pk ::boolean)
+(s/def ::autoinc ::boolean)
+(s/def ::unique ::boolean)
 (s/def ::default ::s/any)
 (s/def ::refs string?)
 (s/def ::fk-name string?)
 
 (s/def ::column (s/keys :req-un [::name ::type]
                         :opt-un [::null ::max-length ::required ::pk ::autoinc ::unique ::default
-                                 ::refs ::fkname]))
+                                 ::refs ::fk-name]))
 (s/def ::columns (s/cat :column (s/* ::column)))
 
 (s/def ::entity-description (s/keys :req-un [::name ::columns]))
