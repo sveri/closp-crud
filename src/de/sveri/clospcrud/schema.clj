@@ -2,7 +2,8 @@
   (:require [clojure.spec :as s]))
 
 (s/def ::name string?)
-(s/def ::boolean #{true false})
+;(s/def ::boolean #{true? false?})
+(s/def ::boolean (s/or :t true? :f false?))
 
 (s/def ::entityname string?)
 (s/def ::entity-ns string?)
