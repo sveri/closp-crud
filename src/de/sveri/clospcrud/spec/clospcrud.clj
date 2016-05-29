@@ -1,11 +1,11 @@
-(ns de.sveri.clospcrud.schema
+(ns de.sveri.clospcrud.spec.clospcrud
   (:require [clojure.spec :as s]))
 
-(s/def ::name string?)
-;(s/def ::boolean #{true? false?})
+(s/def ::name (s/and string? #(not= "" %)))
 (s/def ::boolean (s/or :t true? :f false?))
+(s/def ::none-empty-string (s/and string? #(not= "" %)))
 
-(s/def ::entityname string?)
+(s/def ::entityname ::name)
 (s/def ::entity-ns string?)
 (s/def ::ns string?)
 (s/def ::colname string?)
@@ -21,18 +21,18 @@
 
 (s/def ::type ::column-types)
 (s/def ::null ::boolean)
-(s/def ::max-length number?)
+(s/def ::max-length (s/and integer? #(< 0 %)))
 (s/def ::required ::boolean)
 (s/def ::pk ::boolean)
 (s/def ::autoinc ::boolean)
 (s/def ::unique ::boolean)
 (s/def ::default ::s/any)
-(s/def ::refs string?)
-(s/def ::fk-name string?)
+(s/def ::refs ::none-empty-string)
+(s/def ::fk-name ::none-empty-string)
 
 (s/def ::column (s/keys :req-un [::name ::type]
                         :opt-un [::null ::max-length ::required ::pk ::autoinc ::unique ::default
                                  ::refs ::fk-name]))
-(s/def ::columns (s/cat :column (s/* ::column)))
+(s/def ::columns (s/cat :column (s/+ ::column)))
 
 (s/def ::entity-description (s/keys :req-un [::name ::columns]))

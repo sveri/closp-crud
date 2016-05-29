@@ -1,4 +1,4 @@
-(ns de.sveri.clospcrud.html-schema
+(ns de.sveri.clospcrud.spec.html
   (:require [clojure.spec :as s]))
 
 

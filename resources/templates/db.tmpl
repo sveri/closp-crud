@@ -1,8 +1,10 @@
 (ns [{ns}]
   (:refer-clojure :exclude [update])
   (:require [korma.core :refer [defentity many-to-many select where limit insert values update delete set-fields]]
+            [clojure.spec :as s]
             [[{entity-ns}] :refer [[{entityname}]]]))
 
+;(s/fdef get-all-[{entityname}]s :
 (defn get-all-[{entityname}]s [] (select [{entityname}]))
 
 (defn get-[{entityname}]-by-id [id] (first (select [{entityname}] (where {:id id}) (limit 1))))

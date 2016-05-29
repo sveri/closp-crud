@@ -1,20 +1,11 @@
 (ns de.sveri.clospcrud.db-code-generator
   (:require [selmer.parser :as selm]
             [de.sveri.clospcrud.helper :as h]
-            [de.sveri.clospcrud.schema :as schem]
+            [de.sveri.clospcrud.spec.clospcrud :as schem]
             [clojure.string :as str]
             [clojure.java.io :as io]
             [clojure.spec :as s])
   (:import (java.io File)))
-
-;(s/def ::entityname string?)
-;(s/def ::entity-ns string?)
-;(s/def ::ns string?)
-;(s/def ::colname string?)
-;(s/def ::colname-fn string?)
-;(s/def ::ds-column (s/keys :req-un [::colname ::colname-fn]))
-;(s/def ::cols (s/cat :cols (s/+ ::ds-column)))
-;(s/def ::template-map (s/keys :req-un [::entityname ::entity-ns ::ns ::cols]))
 
 (s/fdef dataset->template-map :args (s/cat :ns string? :entity-ns string? :ds ::schem/entity-description)
         :ret ::schem/template-map)

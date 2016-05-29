@@ -1,4 +1,4 @@
-(ns de.sveri.clospcrud.liquibase-schema
+(ns de.sveri.clospcrud.spec.liquibase
   (:require [clojure.spec :as s]))
 
 (s/def ::name string?)

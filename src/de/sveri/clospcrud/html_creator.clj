@@ -5,8 +5,8 @@
             [de.sveri.clojure.commons.files.faf :as faf]
             [selmer.parser :as selm]
             [clojure.string :as str]
-            [de.sveri.clospcrud.schema :as schem]
-            [de.sveri.clospcrud.html-schema :as hschem]
+            [de.sveri.clospcrud.spec.clospcrud :as schem]
+            [de.sveri.clospcrud.spec.html :as hschem]
             [clojure.spec :as s])
   (:import (java.lang System)))
 

@@ -1,6 +1,6 @@
 (ns de.sveri.clospcrud.td-to-hiccup
-  (:require [de.sveri.clospcrud.schema :as schem]
-            [de.sveri.clospcrud.html-schema :as hschem]
+  (:require [de.sveri.clospcrud.spec.clospcrud :as schem]
+            [de.sveri.clospcrud.spec.html :as hschem]
             [clojure.spec :as s]))
 
 

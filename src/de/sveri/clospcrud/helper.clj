@@ -5,7 +5,7 @@
             [de.sveri.clojure.commons.files.faf :as comm-faf]
             [clojure.string :as str]
             [de.sveri.clojure.commons.files.faf :as faf]
-            [de.sveri.clospcrud.schema :as schem]
+            [de.sveri.clospcrud.spec.clospcrud :as schem]
             [clojure.spec :as s]))
 
 

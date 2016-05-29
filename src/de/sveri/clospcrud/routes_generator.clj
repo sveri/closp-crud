@@ -2,7 +2,7 @@
   (:require [selmer.parser :as selm]
             [clojure.pprint :as pp]
             [de.sveri.clospcrud.helper :as h]
-            [de.sveri.clospcrud.schema :as schem]
+            [de.sveri.clospcrud.spec.clospcrud :as schem]
             [clojure.spec :as s]))
 
 (def bool-conv-fn '(defn convert-boolean [b] (if (= "on" b) true false)))

@@ -4,8 +4,8 @@
             [clj-dbcp.core :as dbcp]
             [clj-miscutil.core :as mu]
             [clj-liquibase.change :as ch]
-            [de.sveri.clospcrud.schema :as schem]
-            [de.sveri.clospcrud.liquibase-schema :as lschem]
+            [de.sveri.clospcrud.spec.clospcrud :as schem]
+            [de.sveri.clospcrud.spec.liquibase :as lschem]
             [clojure.spec :as s])
   (:import (liquibase.sql Sql)
            (liquibase.statement SqlStatement)
