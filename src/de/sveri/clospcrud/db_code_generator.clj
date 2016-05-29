@@ -16,8 +16,8 @@
      :entity-ns  entity-ns
      :cols       cols}))
 
-(s/fdef render-db-file :args (s/cat :ns string? :entity-ns string? :dataset ::schem/entity-description)
-        :ret string?)
+(s/fdef render-db-file :args (s/cat :ns string? :entity-ns string? :dataset ::schem/entity-description))
+        ;:ret string?)
 (defn render-db-file [ns entity-ns dataset]
   (let [templ-map (dataset->template-map ns entity-ns dataset)]
     (selm/render-file "templates/db.tmpl" templ-map {:tag-open \[ :tag-close \]})))

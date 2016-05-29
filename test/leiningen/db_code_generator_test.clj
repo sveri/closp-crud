@@ -32,8 +32,13 @@
   (let [db-content (render-db-file db-ns entity-ns person-definition)]
     (is (.contains db-content "[foo.bar.db.entities :refer [person]]"))))
 
-;(defspec foo 100
+;(defspec get-all-fdef 30
 ;         (prop/for-all [ent-desc (s/gen ::schem/entity-description)]
-;                       (println (render-db-file db-ns entity-ns ent-desc))))
+;                       (let [ent-name (:name ent-desc)]
+;                         (println ent-desc)
+;                         (println (render-db-file db-ns entity-ns ent-desc))
+;                         (= ent-name ent-name))))
+                         ;(.contains (render-db-file db-ns entity-ns ent-desc)))))
+                                    ;(format "(s/fdef get-all-%ss :ret (s/cat :%ss ::%s-map))" ent-name ent-name ent-name)))))
 
 (s/instrument-all)

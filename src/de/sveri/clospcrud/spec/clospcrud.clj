@@ -26,7 +26,7 @@
 (s/def ::pk ::boolean)
 (s/def ::autoinc ::boolean)
 (s/def ::unique ::boolean)
-(s/def ::default ::s/any)
+(s/def ::default (s/or :string string? :boolean ::boolean))
 (s/def ::refs ::none-empty-string)
 (s/def ::fk-name ::none-empty-string)
 

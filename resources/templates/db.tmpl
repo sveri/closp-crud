@@ -4,7 +4,9 @@
             [clojure.spec :as s]
             [[{entity-ns}] :refer [[{entityname}]]]))
 
-;(s/fdef get-all-[{entityname}]s :
+;(s/def ::car-map (s/keys :req-un [::]))
+
+(s/fdef get-all-[{entityname}]s :ret (s/cat :[{entityname}]s ::[{entityname}]-map))
 (defn get-all-[{entityname}]s [] (select [{entityname}]))
 
 (defn get-[{entityname}]-by-id [id] (first (select [{entityname}] (where {:id id}) (limit 1))))
