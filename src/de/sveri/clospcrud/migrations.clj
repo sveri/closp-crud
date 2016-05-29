@@ -1,4 +1,4 @@
-(ns de.sveri.clospcrud.entities
+(ns de.sveri.clospcrud.migrations
   (:require [de.sveri.clospcrud.liquibase :as liq]
             [de.sveri.clojure.commons.files.edn :as comm-edn]
             [de.sveri.clospcrud.helper :as h]
@@ -6,7 +6,7 @@
             [clojure.spec :as s]))
 
 (s/fdef load-entity-from-path :args (s/cat :fp string?) :ret ::s/any)
-(defn load-entity-from-path [fp]
+(defn load-entity-description-from-path [fp]
   (comm-edn/filepath->edn fp))
 
 (s/fdef generate-sql-statements :args (s/cat :ent-description ::schem/entity-description :jdbc-uri string?)

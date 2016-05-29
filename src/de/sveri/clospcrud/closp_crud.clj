@@ -1,9 +1,8 @@
 (ns de.sveri.clospcrud.closp-crud
   (:require [de.sveri.clospcrud.cli-options :as opt-helper]
             [clojure.tools.cli :as t-cli]
-            [de.sveri.clospcrud.entities :as ent]
+            [de.sveri.clospcrud.migrations :as mig]
             [de.sveri.clospcrud.db-code-generator :as dcg]
-            [clojure.core.typed :as t]
             [de.sveri.clospcrud.html-creator :as hc]
             [de.sveri.clospcrud.helper :as h]
             [de.sveri.clospcrud.routes-generator :as rg]
@@ -25,7 +24,7 @@
   [& args]
   (let [{:keys [options]} (t-cli/parse-opts args opt-helper/cli-options)
         config (f-edn/from-edn "closp-crud.edn")
-        file-in-path (:filepath options)
+        edn-file-path (:filepath options)
         jdbc-uri (:jdbc-url config)
         migr-out-path (:migrations-output-path config)
         ns-db (:ns-db config)
@@ -35,13 +34,13 @@
         clj-src (:clj-src config)
         templ-path (.getAbsolutePath (File. "./" (:templates config)))
         src-path (.getAbsolutePath (File. "./" clj-src))
-        dataset (ent/load-entity-from-path file-in-path)]
+        entity-description (mig/load-entity-description-from-path edn-file-path)]
 
-    (if (files-exist? (:name dataset) ns-db ns-routes templ-path src-path)
+    (if (files-exist? (:name entity-description) ns-db ns-routes templ-path src-path)
       (println "Some file exists already. Cancelling.")
-      (do (dcg/store-dataset ns-db ns-entities dataset src-path)
-          (dcg/write-db-entities ns-entities dataset src-path)
-          (ent/write-sql-statements (ent/load-entity-from-path file-in-path) jdbc-uri migr-out-path)
-          (hc/store-html-files dataset templ-path)
-          (rg/store-route ns-routes ns-db ns-layout dataset src-path)
+      (do (dcg/store-dataset ns-db ns-entities entity-description src-path)
+          (dcg/write-db-entities ns-entities entity-description src-path)
+          (mig/write-sql-statements entity-description jdbc-uri migr-out-path)
+          (hc/store-html-files entity-description templ-path)
+          (rg/store-route ns-routes ns-db ns-layout entity-description src-path)
           (println "Done.")))))

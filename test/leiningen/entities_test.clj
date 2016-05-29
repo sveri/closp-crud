@@ -1,6 +1,6 @@
 (ns leiningen.entities-test
   (:require [clojure.test :refer :all]
-            [de.sveri.clospcrud.entities :as ent]
+            [de.sveri.clospcrud.migrations :as ent]
             [leiningen.common :refer [person-definition]]
             [clojure.spec :as s]))
 
