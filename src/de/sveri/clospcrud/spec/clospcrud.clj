@@ -31,8 +31,11 @@
 (s/def ::fk-name ::none-empty-string)
 
 (s/def ::column (s/keys :req-un [::name ::type]
-                        :opt-un [::null ::max-length ::required ::pk ::autoinc ::unique ::default
+                        :opt-un [::null ::max-length
+                                 ::required ::pk
+                                 ::autoinc
+                                 ::unique ::default
                                  ::refs ::fk-name]))
-(s/def ::columns (s/cat :column (s/+ ::column)))
+(s/def ::columns (s/cat :column (s/* ::column)))
 
 (s/def ::entity-description (s/keys :req-un [::name ::columns]))

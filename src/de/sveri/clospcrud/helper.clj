@@ -18,7 +18,7 @@
 (s/fdef remove-autoinc-columns :args (s/cat :cols (s/spec ::schem/columns))
         :ret ::schem/columns)
 (defn remove-autoinc-columns [cols]
-  (vec (remove #(= true (:autoinc %)) cols)))
+  (remove #(= true (:autoinc %)) cols))
 
 (s/fdef filter-dataset :args (s/cat :dataset ::schem/entity-description)
         :ret ::schem/entity-description)
