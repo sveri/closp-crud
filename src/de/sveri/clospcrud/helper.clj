@@ -31,8 +31,12 @@
     (if (= :boolean (:type col)) (str "(convert-boolean " name ")") name)))
 
 (s/fdef ds-columns->template-columns :args (s/cat :cols (s/spec ::schem/columns))
-        :ret (s/cat :ds-column (s/+ ::schem/ds-column)))
+        :ret (s/cat :ds-column (s/* ::schem/ds-column)))
 (defn ds-columns->template-columns [cols]
+  (println (mapv (fn [col]
+                   {:colname (:name col)
+                    :colname-fn (get-colname-or-bool-convert col)})
+                 (remove-autoinc-columns cols)))
   (mapv (fn [col]
           {:colname (:name col)
            :colname-fn (get-colname-or-bool-convert col)})

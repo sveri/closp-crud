@@ -9,4 +9,8 @@
          (prop/for-all [columns (s/gen ::schem/columns)]
                        (= 0 (count (filter :autoinc (h/remove-autoinc-columns columns))))))
 
+(defspec ds-columns->template-columns 10
+         (prop/for-all [columns (s/gen ::schem/columns)]
+                       (= 0 (count (filter :autoinc (h/ds-columns->template-columns columns))))))
+
 (s/instrument-all)
